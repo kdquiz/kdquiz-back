@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqldb
+    environment:
+      MYSQL_DATABASE: kd-quiz
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_PASSWORD: 12345678
+    ports:
+      - "3307:3306"
+
+  backend:
+    build: .
+    restart: always
+    depends_on:
+      - mysqldb
+    environment:
+      WAIT_HOSTS: mysqldb:3306
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/kd-quiz?createDatabaseIfNotExist=true&characterEncoding=UTF-8&profileSql=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    # SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+    command: ["java", "-jar", "/app.jar"]
