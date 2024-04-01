@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-//asdasdasdasdas
-
 @Entity
 @Getter
 @Setter
