@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://localhost:3307/kd-quiz?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
+    url: "jdbc:mysql://localhost:3306/kd-quiz?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
     username: "root"
-    password: "12345678"
+    password: "dmstjd4522"
   jpa:
     database: mysql
     hibernate:
@@ -17,3 +17,31 @@ spring:
     init:
       data-locations: classpath*:db/data.sql
       mode: always
+
+
+## 로그 레벨 설정
+#logging:
+#  level:
+#    # 전체 패키지 레벨 설정
+#    root: DEBUG
+#    # 특정 패키지 레벨 설정
+#    org.springframework.web: DEBUG
+#    # 내 애플리케이션 패키지 레벨 설정
+#    com.example.myapp: DEBUG
+#
+## 로그 파일 설정
+#logging.file:
+#  # 로그 파일 경로 설정
+#  path: /path/to/logfile
+#  # 로그 파일 이름 설정
+#  name: myapp.log
+#
+## 로그 출력 형식 설정
+#logging.pattern:
+#  # 로그 메시지 출력 형식 설정
+#  console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+#
+## 콘솔 로그 출력 설정
+#logging.console:
+#  # 콘솔 로그 출력 포맷 설정
+#  pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
