@@ -6,7 +6,7 @@ import kdquiz.quiz.domain.Quiz;
 import kdquiz.quiz.dto.ChoiceUpdateDto;
 import kdquiz.quiz.dto.QuestionUpdateDto;
 import kdquiz.quiz.dto.QuizUpdateDto;
-import kdquiz.quiz.exception.ResponseDto;
+import kdquiz.ResponseDto;
 import kdquiz.quiz.repository.ChoiceRepository;
 import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -36,14 +36,17 @@ public class QuizUpdateService {
         try {
             // 기존 퀴즈를 찾음
             Optional<Quiz> quizOptional = quizRepository.findById(quizId);
+            quizOptional.orElseThrow(()->new IllegalArgumentException("퀴즈를 찾을 수 없습니다."));
+
             if (!quizOptional.isPresent()) {
                 // 기존 퀴즈가 존재하지 않으면 실패 응답 반환
-                return ResponseDto.<Void>builder()
-                        .code("Q203")
-                        .status(500)
-                        .message("퀴즈를 찾을 수 없습니다.")
-                        .data(null)
-                        .build();
+                return ResponseDto.setFailed("퀴즈를 찾을 수 없습니다.");
+//                        ResponseDto.<Void>builder()
+//                        .code("Q203")
+//                        .status(500)
+//                        .message("퀴즈를 찾을 수 없습니다.")
+//                        .data(null)
+//                        .build();
             }
 
             // 퀴즈 엔티티 생성 및 저장
@@ -54,6 +57,7 @@ public class QuizUpdateService {
             if(!quizUpdateeDto.getType().isEmpty()){
                 quiz.setType(quizUpdateeDto.getType());
             }
+            quiz.setUpdatedAt(LocalDateTime.now());
             quiz = quizRepository.save(quiz); // 저장 후 ID를 얻기 위해 리턴값으로 받음
 
 
@@ -67,9 +71,9 @@ public class QuizUpdateService {
                     question.setContent(questionUpdateDto.getContent());
                 }
                 question.setScore(questionUpdateDto.getScore());
+                question.setUpdatedAt(LocalDateTime.now());
                 question.setQuiz(quiz); // 퀴즈와 연결
                 question = questionRepository.save(question); // 저장 후 ID를 얻기 위해 리턴값으로 받음
-
                 Long questionId = question.getId();
                 System.out.println("질문아이디: "+questionId);
 
@@ -83,19 +87,21 @@ public class QuizUpdateService {
                     choiceRepository.save(choice);
                 }
             }
-            return ResponseDto.<Void>builder()
-                    .code("Q00")
-                    .status(200)
-                    .message("퀴즈 업데이트 성공")
-                    .data(null)
-                    .build();
+            return ResponseDto.setSuccess("Q003", "퀴즈 업데이트 성공", null);
+//                    ResponseDto.<Void>builder()
+//                    .code("Q003")
+//                    .status(200)
+//                    .message("퀴즈 업데이트 성공")
+//                    .data(null)
+//                    .build();
         } catch (Exception e) {
-            return ResponseDto.<Void>builder()
-                    .code("Q101")
-                    .status(500)
-                    .message("퀴즈 업데이트 실패")
-                    .data(null)
-                    .build();
+            return ResponseDto.setFailed("퀴즈 업데이트 실패");
+//                    ResponseDto.<Void>builder()
+//                    .code("Q103")
+//                    .status(500)
+//                    .message("퀴즈 업데이트 실패")
+//                    .data(null)
+//                    .build();
         }
     }
 }

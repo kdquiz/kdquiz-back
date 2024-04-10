@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class GetQuizDto {
+public class QuizGetDto {
     private Long id;
     private String title;
     private String type;

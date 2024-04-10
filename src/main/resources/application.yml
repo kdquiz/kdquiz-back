@@ -18,30 +18,53 @@ spring:
       data-locations: classpath*:db/data.sql
       mode: always
 
+  data:
+    redis:
+      port: 6379
+      host: localhost
 
-## 로그 레벨 설정
-#logging:
-#  level:
-#    # 전체 패키지 레벨 설정
-#    root: DEBUG
-#    # 특정 패키지 레벨 설정
-#    org.springframework.web: DEBUG
-#    # 내 애플리케이션 패키지 레벨 설정
-#    com.example.myapp: DEBUG
-#
-## 로그 파일 설정
-#logging.file:
-#  # 로그 파일 경로 설정
-#  path: /path/to/logfile
-#  # 로그 파일 이름 설정
-#  name: myapp.log
-#
-## 로그 출력 형식 설정
-#logging.pattern:
-#  # 로그 메시지 출력 형식 설정
-#  console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-#
-## 콘솔 로그 출력 설정
-#logging.console:
-#  # 콘솔 로그 출력 포맷 설정
-#  pattern: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+#  mail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: umdmstjd@gmail.com
+#    password: abkq wgdm umen vhcu
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+#          connectiontimeout: 5000
+#          timeout: 5000
+#          writetimeout: 5000
+#    auth-code-expiration-millis: 1800000  # 30 * 60 * 1000 == 30?
+  mail:
+    host: smtp.gmail.com # 1
+    port: 587 # 2
+    username: umdmstjd@gmail.com
+    password: abkq wgdm umen vhcu
+    properties:
+      mail:
+        smtp:
+          auth: true # 5
+          timeout: 5000 # 6
+          starttls:
+            enable: true # 7
+            required: true
+jwt:
+  secret:
+    key: 251fa760ba39a417b9062865a1afe1bfe6fd53b91d29a0c641cb15c78ee853a9
+Email:
+  id: umdmstjd@gmail.com
+  pw: abkq wgdm umen vhcu
+
+
+# Spring Security 로그 레벨 설정
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+
+
+

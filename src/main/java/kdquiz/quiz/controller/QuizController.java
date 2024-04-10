@@ -1,9 +1,9 @@
 package kdquiz.quiz.controller;
 
-import kdquiz.quiz.dto.GetQuizDto;
+import kdquiz.quiz.dto.QuizGetDto;
 import kdquiz.quiz.dto.QuizCreateDto;
 import kdquiz.quiz.dto.QuizUpdateDto;
-import kdquiz.quiz.exception.ResponseDto;
+import kdquiz.ResponseDto;
 import kdquiz.quiz.service.QuizCreateService;
 import kdquiz.quiz.service.QuizDeleteService;
 import kdquiz.quiz.service.QuizGetService;
@@ -40,8 +40,8 @@ public class QuizController {
     }
 
     @GetMapping("/quiz/user/{userId}")
-    public ResponseEntity<ResponseDto<List<GetQuizDto>>> GetQuiz(@PathVariable Long userId){
-        ResponseDto<List<GetQuizDto>> responseDto = getQuizService.GetQuiz(userId);
+    public ResponseEntity<ResponseDto<List<QuizGetDto>>> GetQuiz(@PathVariable Long userId){
+        ResponseDto<List<QuizGetDto>> responseDto = getQuizService.GetQuiz(userId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

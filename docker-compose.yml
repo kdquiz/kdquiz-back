@@ -11,16 +11,26 @@ services:
     ports:
       - "3307:3306"
 
+    redis:
+      image: redis:latest
+      container_name: redis
+      ports:
+        - "6379:6379"
+
   backend:
     build: .
     restart: always
     depends_on:
       - mysqldb
+      - redis
     environment:
       WAIT_HOSTS: mysqldb:3306
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/kd-quiz?createDatabaseIfNotExist=true&characterEncoding=UTF-8&profileSql=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 12345678
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+
     # SPRING_PROFILES_ACTIVE: dev
     ports:
       - "8080:8080"
