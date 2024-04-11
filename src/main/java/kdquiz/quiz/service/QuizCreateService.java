@@ -63,7 +63,7 @@ public class QuizCreateService {
 
             return ResponseDto.setSuccess("Q001", "퀴즈 생생 성공", null);
         } catch (Exception e) {
-            return ResponseDto.setFailed("퀴즈 생성 실패");
+            return ResponseDto.setFailed("Q101","퀴즈 생성 실패");
 
         }
     }

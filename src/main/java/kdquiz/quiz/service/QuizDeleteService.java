@@ -24,11 +24,11 @@ public class QuizDeleteService {
                 return ResponseDto.setSuccess("Q004", "퀴즈 삭제 성공", null);
 
             }else{
-                return ResponseDto.setFailed("삭제 할 퀴즈를 찾을 수 없습니다.");
+                return ResponseDto.setFailed("Q104","삭제 할 퀴즈를 찾을 수 없습니다.");
 
             }
         }catch (Exception e){
-            return ResponseDto.setFailed("퀴즈 삭제 실패");
+            return ResponseDto.setFailed("Q204","퀴즈 삭제 실패");
 
         }
 

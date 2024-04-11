@@ -11,6 +11,6 @@ public class ExceptionUser {
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseDto<?> exceptionHandler(Exception exception){
         String message = exception.getMessage();
-        return ResponseDto.setFailed(message);
+        return ResponseDto.setFailedMessage(message);
     }
 }

@@ -31,15 +31,15 @@ public class SignUpService {
         Boolean check = false;
         check = mailSendService.SignUpCheck(check);
         if(!check){
-            return ResponseDto.setFailed("인증먼저 해주세요");
+            return ResponseDto.setFailed("U002", "인증먼저 해주세요");
         }
         Optional<Users> foundEmail = usersRepository.findByEmail(email);
         if(foundEmail.isPresent()){
-            return ResponseDto.setFailed("아이디 중복");
+            return ResponseDto.setFailed("U102", "아이디 중복");
         }
         Optional<Users> foundNickname = usersRepository.findByNickname(nickname);
         if(foundNickname.isPresent()){
-            return ResponseDto.setFailed("닉넴임 중복");
+            return ResponseDto.setFailed("U202", "닉넴임 중복");
         }
         password = passwordEncoder.encode(password);
         Users users = new Users();
@@ -48,7 +48,7 @@ public class SignUpService {
         users.setNickname(nickname);
         users.setCreatedAt(LocalDateTime.now());
         usersRepository.save(users);
-        return ResponseDto.setSuccess("U001", "회원가입 성공", null);
+        return ResponseDto.setSuccess("U002", "회원가입 성공", null);
 
     }
 }

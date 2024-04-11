@@ -19,8 +19,12 @@ public class ResponseDto<T> implements Serializable {
         return new ResponseDto<>(code, 200, message, data);
     }
 
-    public static <T> ResponseDto<T> setFailed(String message){
-        return new ResponseDto<>("Q000", 0, message, null);
+    public static <T> ResponseDto<T> setFailed(String code, String message){
+        return new ResponseDto<>(code, 500, message, null);
+    }
+
+    public static <T> ResponseDto<T> setFailedMessage(String message){
+        return new ResponseDto<>("000",0,message, null);
     }
 
 }

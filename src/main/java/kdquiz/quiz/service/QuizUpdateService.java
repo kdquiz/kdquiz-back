@@ -40,7 +40,7 @@ public class QuizUpdateService {
 
             if (!quizOptional.isPresent()) {
                 // 기존 퀴즈가 존재하지 않으면 실패 응답 반환
-                return ResponseDto.setFailed("퀴즈를 찾을 수 없습니다.");
+                return ResponseDto.setFailed("Q103", "퀴즈를 찾을 수 없습니다.");
 //                        ResponseDto.<Void>builder()
 //                        .code("Q203")
 //                        .status(500)
@@ -95,7 +95,7 @@ public class QuizUpdateService {
 //                    .data(null)
 //                    .build();
         } catch (Exception e) {
-            return ResponseDto.setFailed("퀴즈 업데이트 실패");
+            return ResponseDto.setFailed("Q203","퀴즈 업데이트 실패");
 //                    ResponseDto.<Void>builder()
 //                    .code("Q103")
 //                    .status(500)

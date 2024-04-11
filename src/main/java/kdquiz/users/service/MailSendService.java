@@ -48,7 +48,7 @@ public class MailSendService {
     public ResponseDto<?> joinEmail(String email){
         Optional<Users> users = usersRepository.findByEmail(email);
         if(users.isPresent()){
-            return ResponseDto.setFailed("이미 가입된 이메일 입니다.");
+            return ResponseDto.setFailed("U101","이미 가입된 이메일 입니다.");
         }
 
         makeRandomNumber();
@@ -166,7 +166,7 @@ public class MailSendService {
 //                        "인증번호는[ <span><h1>"+authNumber+"</h1></span> ]입니다.";
 
         mailSender(setFrom, toMail, title, content);
-        return ResponseDto.setSuccess("U000", "이메일 요청 성공", authNumber );
+        return ResponseDto.setSuccess("U001", "이메일 요청 성공", authNumber );
     }
 
     //이메일 전송
@@ -183,24 +183,27 @@ public class MailSendService {
         } catch (MessagingException e) {//이메일 서버에 연결할 수 없거나, 잘못된 이메일 주소를 사용하거나, 인증 오류가 발생하는 등 오류
                 // 이러한 경우 MessagingException이 발생
                 e.printStackTrace();//e.printStackTrace()는 예외를 기본 오류 스트림에 출력하는 메서드
-            return ResponseDto.setFailed("이메일 전송 실패");
+            return ResponseDto.setFailed("U201", "이메일 전송 실패");
             }
         redisUtil.setDataExpire(Integer.toString(authNumber), toMail, 60*5L);
-        return ResponseDto.setSuccess("U000", "이메일 전송 성공", null);
+        return ResponseDto.setSuccess("U001", "이메일 전송 성공", null);
     }
 
     //이메일 인증
     public ResponseDto<?> CheckAuthNum(String email, String authNum){
         if(redisUtil.getData(authNum)==null){
-            return ResponseDto.setFailed("이메일 인증 재시도 해주십시오.");
+            return ResponseDto.setFailed("U101", "이메일 인증 재시도 해주십시오.");
         }
         else if(redisUtil.getData(authNum).equals(email)){
             EmailCheck = true;
 
-            return ResponseDto.setSuccess("U000", "이메일 인증이 되었습니다.", null);
+            return ResponseDto.setSuccess("U001", "이메일 인증이 되었습니다.", null);
+        }
+        else if(!redisUtil.getData(authNum).equals(email)){
+            return ResponseDto.setFailed("U201", "인증번호가 다릅니다.");
         }
         else{
-            return ResponseDto.setFailed("이메일 인증 재시도 해주십시오.");
+            return ResponseDto.setFailed("U301", "이메일 인증 재시도 해주십시오.");
         }
     }
 

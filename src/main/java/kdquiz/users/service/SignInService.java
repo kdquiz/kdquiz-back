@@ -32,12 +32,12 @@ public class SignInService {
         users.orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원 입니다."));
 
         if(!passwordEncoder.matches(password, users.get().getPassword())){
-            return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
+            return ResponseDto.setFailed("U103","비밀번호가 일치하지 않습니다.");
         }
         System.out.println("userEmail: "+email);
         String token = jwtUtil.createToken(email);
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(email));
-        return ResponseDto.setSuccess("U002", "로그인 성공", token );
+        return ResponseDto.setSuccess("U003", "로그인 성공", token );
 
     }
 }

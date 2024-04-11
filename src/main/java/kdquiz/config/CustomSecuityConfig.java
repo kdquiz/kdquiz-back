@@ -27,12 +27,16 @@ public class CustomSecuityConfig implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf().disable().authorizeRequests()
-                // 밑에 3명 url 토큰 인증없이 바로 실행 가능
+                // 밑에 5명 url 토큰 인증없이 바로 실행 가능
                 .requestMatchers("/api/v1/participants").permitAll()
                 .requestMatchers("/api/v1/users/register").permitAll()
                 .requestMatchers("/api/v1/users/login").permitAll()
                 .requestMatchers("/api/v1/mailSend").permitAll()
                 .requestMatchers("/api/v1/mailAuthCheck").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll() //스웨거
+                .requestMatchers("/v3/api-docs/**").permitAll() //스웨거
+                .requestMatchers("/swagger-ui.html/**").permitAll() //스웨거
+
                 // 나머지들은 토큰 있어야 가능
                 .anyRequest().authenticated()
                 //로그인 커스텀 나중에 개발 할때 주석 처리 풀어

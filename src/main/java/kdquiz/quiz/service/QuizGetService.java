@@ -23,7 +23,7 @@ public class QuizGetService {
 
             //user id를 못 찾을 경우
             if(quizzes.isEmpty()){
-                return ResponseDto.setFailed("사용자가 없음");
+                return ResponseDto.setFailed("Q102","사용자가 없음");
 //                        ResponseDto.<List<GetQuizDto>>builder()
 //                        .code("Q202")
 //                        .status(500)
@@ -48,7 +48,7 @@ public class QuizGetService {
 //                    .data(getList)
 //                    .build();
         } catch (Exception e) {
-            return ResponseDto.setFailed("사용자가 생성한 퀴즈 목록 조회 실패");
+            return ResponseDto.setFailed("Q202","사용자가 생성한 퀴즈 목록 조회 실패");
 //                    ResponseDto.<List<GetQuizDto>>builder()
 //                    .code("Q202")
 //                    .status(500)
