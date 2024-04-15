@@ -18,10 +18,6 @@ spring:
       data-locations: classpath*:db/data.sql
       mode: always
 
-  data:
-    redis:
-      port: 6379
-      host: localhost
 
 #  mail:
 #    host: smtp.gmail.com

@@ -28,7 +28,6 @@ dependencies {
 	implementation 'mysql:mysql-connector-java:8.0.33'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	//메일 의존성
 	implementation 'javax.mail:mail:1.4.7'
 	// Spring Context Support

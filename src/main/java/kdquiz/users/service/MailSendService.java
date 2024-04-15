@@ -1,19 +1,23 @@
 package kdquiz.users.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import kdquiz.ResponseDto;
-import kdquiz.users.Redis.RedisUtil;
+import kdquiz.users.domain.EmailCheck;
 import kdquiz.users.domain.Users;
-import kdquiz.users.dto.EmailCheckDto;
+import kdquiz.users.repository.EmailCheckRepository;
 import kdquiz.users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.Random;
 @Component
@@ -27,12 +31,14 @@ public class MailSendService {
     private String EmailId;
 
     @Autowired
-    private RedisUtil redisUtil;
+    private EmailCheckRepository emailCheckRepository;
 
     @Autowired
     private UsersRepository usersRepository;
 
-    private Boolean EmailCheck = false;
+    private Boolean authemail = false;
+
+
 
     //임의의 6자리 양수를 반환합니다.
     public void makeRandomNumber(){
@@ -185,34 +191,52 @@ public class MailSendService {
                 e.printStackTrace();//e.printStackTrace()는 예외를 기본 오류 스트림에 출력하는 메서드
             return ResponseDto.setFailed("U201", "이메일 전송 실패");
             }
-        redisUtil.setDataExpire(Integer.toString(authNumber), toMail, 60*5L);
+        EmailCheck emailCheck = new EmailCheck();
+        emailCheck.setEmail(toMail);
+        emailCheck.setAuth(Integer.toString(authNumber));
+        emailCheck.setCreatedAt(LocalDateTime.now());
+        emailCheckRepository.save(emailCheck);
         return ResponseDto.setSuccess("U001", "이메일 전송 성공", null);
     }
 
     //이메일 인증
     public ResponseDto<?> CheckAuthNum(String email, String authNum){
-        if(redisUtil.getData(authNum)==null){
-            return ResponseDto.setFailed("U101", "이메일 인증 재시도 해주십시오.");
-        }
-        else if(redisUtil.getData(authNum).equals(email)){
-            EmailCheck = true;
+        Optional<EmailCheck> emailCheckOpt = emailCheckRepository.findByEmailAndAuth(email, authNum);
 
+        if (emailCheckOpt.isPresent()) {
+            EmailCheck emailCheck = emailCheckOpt.get();
+
+            // 인증번호 확인
+            emailCheckRepository.delete(emailCheck);
+
+            // 인증 성공 처리
+            authemail = true;
             return ResponseDto.setSuccess("U001", "이메일 인증이 되었습니다.", null);
-        }
-        else if(!redisUtil.getData(authNum).equals(email)){
+        } else {
+            // 인증 실패 처리
             return ResponseDto.setFailed("U201", "인증번호가 다릅니다.");
-        }
-        else{
-            return ResponseDto.setFailed("U301", "이메일 인증 재시도 해주십시오.");
         }
     }
 
     public Boolean SignUpCheck(Boolean check) {
-        if (EmailCheck) {
+        if (authemail) {
+            authemail = false;
             return true;
         }else {
             return false;
         }
     }
+
+//    @Scheduled(fixedRate = 60000) // 5분마다 실행
+//    @Transactional
+//    public void deleteOldData() {
+//        LocalDateTime now = LocalDateTime.now();
+//        LocalDateTime timeThreshold = now.minusMinutes(5);
+//        System.out.println("삭제 실행");
+//        emailCheckRepository.deleteByCreatedAtBefore(timeThreshold);
+//        LocalDateTime fiveMinutesAgo = LocalDateTime.now().minus(5, ChronoUnit.MINUTES); //생성된 지 5분된 데이터 삭제
+//        System.out.println("삭제 실행");
+//        emailCheckRepository.deleteByCreatedAtBefore(fiveMinutesAgo);
+//    }
 
 }
