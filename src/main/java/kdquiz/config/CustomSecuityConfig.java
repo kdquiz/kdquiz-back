@@ -63,8 +63,11 @@ public class CustomSecuityConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+                .allowedOrigins("*")
+                .allowedMethods("*")
+                //.allowCredentials(true) //주석처리함
+                .allowedOriginPatterns("*") //추가한 부분
+                .exposedHeaders("*");
     }
     //사용자 비밀번호 암호화
     @Bean
