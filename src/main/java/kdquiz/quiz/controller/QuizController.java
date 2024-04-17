@@ -40,7 +40,7 @@ public class QuizController {
     QuizGetService quizGetService;
 
 
-    @Operation(summary = "퀴즈생성")
+    @Operation(summary = "퀴즈생성 토큰 헤더에 넣으셈")
     @ApiResponses({
             @ApiResponse(responseCode = "Q001", description = "퀴즈 생성 성공"),
             @ApiResponse(responseCode = "Q101", description = "퀴즈 생성 실패"),
@@ -53,7 +53,7 @@ public class QuizController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "사용자가 생성한 모든 퀴즈조회")
+    @Operation(summary = "사용자가 생성한 모든 퀴즈조회 토큰 헤더에 넣으셈")
     @ApiResponses({
             @ApiResponse(responseCode = "Q002", description = "퀴즈 조회 성공"),
             @ApiResponse(responseCode = "Q102", description = "사용자가 없음"),
@@ -66,7 +66,7 @@ public class QuizController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "사용자가 생성한 개별 퀴즈조회")
+    @Operation(summary = "사용자가 생성한 개별 퀴즈조회 토큰 헤더에 넣으셈")
     @ApiResponses({
             @ApiResponse(responseCode = "Q002", description = "퀴즈 조회 성공"),
             @ApiResponse(responseCode = "Q102", description = "사용자가 없음"),
@@ -79,7 +79,7 @@ public class QuizController {
 
     }
 
-    @Operation(summary = "퀴즈 수정")
+    @Operation(summary = "퀴즈 수정 토큰 헤더에 넣으셈")
     @ApiResponses({
             @ApiResponse(responseCode = "Q003", description = "퀴즈 수정 성공"),
             @ApiResponse(responseCode = "Q103", description = "퀴즈를 찾을 수 없음"),
@@ -93,7 +93,7 @@ public class QuizController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "퀴즈삭제")
+    @Operation(summary = "퀴즈삭제 토큰 헤더에 넣으셈")
     @ApiResponses({
             @ApiResponse(responseCode = "Q004", description = "퀴즈 삭제 성공"),
             @ApiResponse(responseCode = "Q102", description = "삭제 할 퀴즈가 없음"),
