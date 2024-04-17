@@ -1,9 +1,9 @@
-package kdquiz.quiz.repository;
+package kdquiz.answer.repository;
 
-import kdquiz.quiz.domain.Answer;
+import kdquiz.domain.Answer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    boolean existsByScoreNot(int score);
+
 }

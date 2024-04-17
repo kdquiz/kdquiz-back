@@ -1,10 +1,8 @@
-package kdquiz.quiz.domain;
+package kdquiz.domain;
 
 import jakarta.persistence.*;
-import kdquiz.participants.domain.Participants;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Setter

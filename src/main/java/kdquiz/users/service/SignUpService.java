@@ -3,7 +3,7 @@ package kdquiz.users.service;
 
 import kdquiz.ResponseDto;
 
-import kdquiz.users.domain.Users;
+import kdquiz.domain.Users;
 import kdquiz.users.dto.SignUpDto;
 import kdquiz.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;

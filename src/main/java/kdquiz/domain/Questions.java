@@ -1,4 +1,4 @@
-package kdquiz.quiz.domain;
+package kdquiz.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,9 +26,6 @@ public class Questions {
         @Column
         private String content;
 
-        @Column
-        private int score;
-
         @Temporal(TemporalType.TIMESTAMP)
         @Column(name = "created_at")
         private LocalDateTime createdAt;
@@ -43,5 +40,8 @@ public class Questions {
 
         @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
         private List<Choice> Choice;
+
+        @OneToOne(mappedBy = "question", cascade = CascadeType.REMOVE)
+        private Options Option;
 
 }

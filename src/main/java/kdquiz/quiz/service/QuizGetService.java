@@ -1,8 +1,11 @@
 package kdquiz.quiz.service;
 
-import kdquiz.quiz.domain.Quiz;
-import kdquiz.quiz.dto.QuizGetDto;
+import kdquiz.domain.*;
+import kdquiz.quiz.dto.*;
 import kdquiz.ResponseDto;
+import kdquiz.quiz.repository.ChoiceRepository;
+import kdquiz.quiz.repository.OptionRepository;
+import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,51 +13,111 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class QuizGetService {
     @Autowired
     QuizRepository quizRepository;
 
+    @Autowired
+    QuestionRepository questionRepository;
+
+    @Autowired
+    OptionRepository optionRepository;
+
+    @Autowired
+    ChoiceRepository choiceRepository;
+
     @Transactional
-    public ResponseDto<List<QuizGetDto>> GetQuiz(Long userId){
+    public ResponseDto<List<QuizGetAllDto>> QuizGetAll(Users users){
         try{
-            List<Quiz> quizzes = quizRepository.findByUsers_Id(userId);
+            List<Quiz> quizzes = quizRepository.findByEmail(users.getEmail());
 
             //user id를 못 찾을 경우
             if(quizzes.isEmpty()){
                 return ResponseDto.setFailed("Q102","사용자가 없음");
-//                        ResponseDto.<List<GetQuizDto>>builder()
-//                        .code("Q202")
-//                        .status(500)
-//                        .message("사용자가 없음")
-//                        .data(null)
-//                        .build();
+
             }
 
-            List<QuizGetDto> getList = new ArrayList<>();
+            List<QuizGetAllDto> getList = new ArrayList<>();
             for(Quiz quiz : quizzes){
-                QuizGetDto getQuiz = new QuizGetDto();
-                getQuiz.setId(quiz.getUsers().getId());
+                QuizGetAllDto getQuiz = new QuizGetAllDto();
+
                 getQuiz.setTitle(quiz.getTitle());
                 getQuiz.setType(quiz.getType());
                 getList.add(getQuiz);
+
             }
             return ResponseDto.setSuccess("Q002", "사용자가 생성한 퀴즈 목록 조회 성공", getList);
-//                    ResponseDto.<List<GetQuizDto>>builder()
-//                    .code("Q002")
-//                    .status(200)
-//                    .message("사용자가 생성한 퀴즈 목록 조회 성공")
-//                    .data(getList)
-//                    .build();
+
         } catch (Exception e) {
             return ResponseDto.setFailed("Q202","사용자가 생성한 퀴즈 목록 조회 실패");
-//                    ResponseDto.<List<GetQuizDto>>builder()
-//                    .code("Q202")
-//                    .status(500)
-//                    .message("사용자가 생성한 퀴즈 목록 조회 실패")
-//                    .data(null)
-//                    .build();
+
+        }
+
+    }
+
+
+    @Transactional
+    public ResponseDto<QuizGetDto> QuizGet(Long quizId, Users users){
+        try{
+            Optional<Quiz> quizOptional = quizRepository.findByEmailAndId(users.getEmail(), quizId);
+
+            // 사용자 ID를 찾지 못한 경우 예외 처리
+            if (quizOptional.isEmpty()) {
+                return ResponseDto.setFailed("Q102", "사용자가 없음");
+            }
+
+            Quiz quiz = quizOptional.get();
+            System.out.println("퀴즈 정보: " + quiz.getTitle());
+
+            // QuizGetDto 객체 생성 및 퀴즈 제목과 유형 설정
+            QuizGetDto quizGetDto = new QuizGetDto();
+            quizGetDto.setTitle(quiz.getTitle());
+            quizGetDto.setType(quiz.getType());
+
+            // Quiz와 관련된 Questions 목록을 가져옵니다.
+            List<Questions> questionsList = questionRepository.findByQuiz_Id(quiz.getId());
+            List<QuestionGetDto> questionDtos = new ArrayList<>();
+
+            for (Questions questions : questionsList) {
+                QuestionGetDto questionGetDto = new QuestionGetDto();
+                questionGetDto.setContent(questions.getContent());
+
+                // Options 정보를 QuestionGetDto에 추가
+                Options options = questions.getOption();
+                OptionGetDto optionGetDto = new OptionGetDto();
+                optionGetDto.setUseHint(options.getUseHint());
+                optionGetDto.setHintTime(options.getHintTime());
+                optionGetDto.setHintContent(options.getHintContent());
+                optionGetDto.setUseAiFeedback(options.getUseAiFeedback());
+                optionGetDto.setAiQuestion(options.getAiQuestion());
+                optionGetDto.setCommentary(options.getCommentary());
+                optionGetDto.setScore(options.getScore());
+
+                questionGetDto.setOptions(optionGetDto);
+
+                // Choices 목록을 가져와서 QuestionGetDto에 추가
+                List<Choice> choicesList = choiceRepository.findByQuestion_Id(questions.getId());
+                List<ChoiceGetDto> choiceDtos = new ArrayList<>();
+
+                for (Choice choice : choicesList) {
+                    ChoiceGetDto choiceGetDto = new ChoiceGetDto();
+                    choiceGetDto.setContent(choice.getContent());
+                    choiceGetDto.setIsCorrect(choice.getIsCorrect());
+                    choiceDtos.add(choiceGetDto);
+                }
+
+                questionGetDto.setChoices(choiceDtos);
+                questionDtos.add(questionGetDto);
+            }
+
+            quizGetDto.setQuestions(questionDtos);
+
+            return ResponseDto.setSuccess("Q002", "사용자가 생성한 퀴즈 목록 조회 성공", quizGetDto);
+        } catch (Exception e) {
+            return ResponseDto.setFailed("Q202", "사용자가 생성한 퀴즈 목록 조회 실패");
         }
 
     }

@@ -1,8 +1,9 @@
 package kdquiz.quiz.service;
 
 import jakarta.transaction.Transactional;
-import kdquiz.quiz.domain.Quiz;
+import kdquiz.domain.Quiz;
 import kdquiz.ResponseDto;
+import kdquiz.domain.Users;
 import kdquiz.quiz.repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,12 @@ public class QuizDeleteService {
     @Autowired
     QuizRepository quizRepository;
     @Transactional
-    public ResponseDto<?> QuizDelete(Long quizId){
+    public ResponseDto<?> QuizDelete(Long quizId, Users users){
+        if(users.getEmail()==null){
+            return ResponseDto.setFailed("Q304","사용자 못 찾음");
+        }
         try{
-            Optional<Quiz> quizOptional = quizRepository.findById(quizId);
+            Optional<Quiz> quizOptional = quizRepository.findByIdAndEmail(quizId, users.getEmail());
             quizOptional.orElseThrow(()->new IllegalArgumentException("삭제 할 퀴즈를 찾을 수 없습니다."));
             if (quizOptional.isPresent()) {
                 quizRepository.delete(quizOptional.get());

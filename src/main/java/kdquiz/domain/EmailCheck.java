@@ -1,4 +1,4 @@
-package kdquiz.users.domain;
+package kdquiz.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

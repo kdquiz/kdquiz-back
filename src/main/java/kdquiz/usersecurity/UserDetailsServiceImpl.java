@@ -1,6 +1,7 @@
-package kdquiz.security;
+package kdquiz.usersecurity;
 
-import kdquiz.users.domain.Users;
+import kdquiz.usersecurity.UserDetailsImpl;
+import kdquiz.domain.Users;
 import kdquiz.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException{
         Users users = usersRepository.findByEmail(userEmail).orElseThrow(()->
                 new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-        return new UserDetailsImpl(users, userEmail);
+        return new UserDetailsImpl(users, users.getEmail());
     }
 }

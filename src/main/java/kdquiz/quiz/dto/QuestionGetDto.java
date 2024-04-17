@@ -4,13 +4,15 @@ import lombok.*;
 
 import java.util.List;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class QuestionCreateDto {
+public class QuestionGetDto {
+    private Long id;
     private String content;
-    private OptionCreateDto options;
-    private List<ChoiceCreateDto> choices;
+    private OptionGetDto options;
+    private List<ChoiceGetDto> choices;
 }

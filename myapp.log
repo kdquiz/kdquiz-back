@@ -266,13 +266,13 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 	Validation Mode: AUTO
 	Jar files URLs []
 	Managed classes names [
-		kdquiz.participants.domain.Participants
-		kdquiz.quiz.domain.Answer
-		kdquiz.quiz.domain.Choice
+		kdquiz.domain.Participants
+		kdquiz.domain.Answer
+		kdquiz.domain.Choice
 		kdquiz.quiz.domain.Participants
-		kdquiz.quiz.domain.Questions
-		kdquiz.quiz.domain.Quiz
-		kdquiz.users.domain.Users]
+		kdquiz.domain.Questions
+		kdquiz.domain.Quiz
+		kdquiz.domain.Users]
 	Mapping files names []
 	Properties []
 2024-04-01T18:07:56.296+09:00 DEBUG 14023 --- [main] o.h.i.internal.IntegratorServiceImpl     : Adding Integrator [org.hibernate.boot.beanvalidation.BeanValidationIntegrator].
@@ -521,18 +521,18 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 2024-04-01T18:07:57.159+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@67ab0d14
 2024-04-01T18:07:57.166+09:00 DEBUG 14023 --- [main] o.h.boot.model.relational.Namespace      : Created database namespace [logicalName=Name{catalog=null, schema=null}, physicalName=Name{catalog=null, schema=null}]
 2024-04-01T18:07:57.178+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@361864fc
-2024-04-01T18:07:57.185+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Binding entity from annotated class: kdquiz.participants.domain.Participants
+2024-04-01T18:07:57.185+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Binding entity from annotated class: kdquiz.domain.Participants
 2024-04-01T18:07:57.191+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Import with entity name Participants
 2024-04-01T18:07:57.196+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5faa4692
-2024-04-01T18:07:57.198+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Bind entity kdquiz.participants.domain.Participants on table participants
+2024-04-01T18:07:57.198+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Bind entity kdquiz.domain.Participants on table participants
 2024-04-01T18:07:57.204+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedDiscriminatorColumn(column='DTYPE')
 2024-04-01T18:07:57.215+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@32563e4d
 2024-04-01T18:07:57.227+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
-2024-04-01T18:07:57.227+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : Not known whether passed class name [kdquiz.participants.domain.Participants] is safe
-2024-04-01T18:07:57.227+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : kdquiz.participants.domain.Participants
+2024-04-01T18:07:57.227+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : Not known whether passed class name [kdquiz.domain.Participants] is safe
+2024-04-01T18:07:57.227+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : kdquiz.domain.Participants
 2024-04-01T18:07:57.232+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property id with lazy=false
 2024-04-01T18:07:57.235+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6ee3b720
-2024-04-01T18:07:57.237+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.participants.domain.Participants:id]
+2024-04-01T18:07:57.237+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Participants:id]
 2024-04-01T18:07:57.242+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for id
 2024-04-01T18:07:57.245+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: participants.id
 2024-04-01T18:07:57.245+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property id
@@ -540,7 +540,7 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 2024-04-01T18:07:57.251+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4e151e2a
 2024-04-01T18:07:57.252+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
 2024-04-01T18:07:57.252+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property nickname with lazy=false
-2024-04-01T18:07:57.253+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.participants.domain.Participants:nickname]
+2024-04-01T18:07:57.253+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Participants:nickname]
 2024-04-01T18:07:57.254+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for nickname
 2024-04-01T18:07:57.254+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: participants.nickname
 2024-04-01T18:07:57.254+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property nickname
@@ -548,16 +548,16 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 2024-04-01T18:07:57.256+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
 2024-04-01T18:07:57.260+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property quiz
 2024-04-01T18:07:57.263+09:00 DEBUG 14023 --- [main] o.h.b.r.c.i.ClassLoaderServiceImpl       : HHH000194: Package not found or wo package-info.java: kdquiz.participants.domain
-2024-04-01T18:07:57.271+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Binding entity from annotated class: kdquiz.quiz.domain.Answer
+2024-04-01T18:07:57.271+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Binding entity from annotated class: kdquiz.domain.Answer
 2024-04-01T18:07:57.272+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@59b02405
 2024-04-01T18:07:57.277+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Import with entity name Answer
-2024-04-01T18:07:57.277+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Bind entity kdquiz.quiz.domain.Answer on table answer
+2024-04-01T18:07:57.277+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Bind entity kdquiz.domain.Answer on table answer
 2024-04-01T18:07:57.277+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedDiscriminatorColumn(column='DTYPE')
 2024-04-01T18:07:57.279+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
-2024-04-01T18:07:57.280+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : Not known whether passed class name [kdquiz.quiz.domain.Answer] is safe
-2024-04-01T18:07:57.280+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : kdquiz.quiz.domain.Answer
+2024-04-01T18:07:57.280+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : Not known whether passed class name [kdquiz.domain.Answer] is safe
+2024-04-01T18:07:57.280+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : kdquiz.domain.Answer
 2024-04-01T18:07:57.281+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property id with lazy=false
-2024-04-01T18:07:57.281+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.quiz.domain.Answer:id]
+2024-04-01T18:07:57.281+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Answer:id]
 2024-04-01T18:07:57.281+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for id
 2024-04-01T18:07:57.281+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: answer.id
 2024-04-01T18:07:57.281+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property id
@@ -567,13 +567,13 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property choice
 2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
 2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property content with lazy=false
-2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.quiz.domain.Answer:content]
+2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Answer:content]
 2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for content
 2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: answer.content
 2024-04-01T18:07:57.283+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property content
 2024-04-01T18:07:57.284+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
 2024-04-01T18:07:57.284+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property isCorrect with lazy=false
-2024-04-01T18:07:57.284+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.quiz.domain.Answer:isCorrect]
+2024-04-01T18:07:57.284+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Answer:isCorrect]
 2024-04-01T18:07:57.284+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for isCorrect
 2024-04-01T18:07:57.284+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: answer.is_correct
 2024-04-01T18:07:57.284+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property isCorrect
@@ -586,33 +586,33 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 2024-04-01T18:07:57.286+09:00 DEBUG 14023 --- [HikariPool-1 connection adder] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - After adding stats (total=10, active=0, idle=10, waiting=0)
 2024-04-01T18:07:57.287+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
 2024-04-01T18:07:57.287+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property score with lazy=false
-2024-04-01T18:07:57.287+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.quiz.domain.Answer:score]
+2024-04-01T18:07:57.287+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Answer:score]
 2024-04-01T18:07:57.287+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for score
 2024-04-01T18:07:57.287+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: answer.score
 2024-04-01T18:07:57.287+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property score
 2024-04-01T18:07:57.288+09:00 DEBUG 14023 --- [main] o.h.b.r.c.i.ClassLoaderServiceImpl       : HHH000194: Package not found or wo package-info.java: kdquiz.quiz.domain
-2024-04-01T18:07:57.289+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Binding entity from annotated class: kdquiz.quiz.domain.Choice
+2024-04-01T18:07:57.289+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Binding entity from annotated class: kdquiz.domain.Choice
 2024-04-01T18:07:57.289+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Import with entity name Choice
-2024-04-01T18:07:57.289+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Bind entity kdquiz.quiz.domain.Choice on table choice
+2024-04-01T18:07:57.289+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Bind entity kdquiz.domain.Choice on table choice
 2024-04-01T18:07:57.289+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedDiscriminatorColumn(column='DTYPE')
 2024-04-01T18:07:57.292+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
-2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : Not known whether passed class name [kdquiz.quiz.domain.Choice] is safe
-2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : kdquiz.quiz.domain.Choice
+2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : Not known whether passed class name [kdquiz.domain.Choice] is safe
+2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.boot.internal.ClassLoaderAccessImpl  : No temp ClassLoader provided; using live ClassLoader for loading potentially unsafe class : kdquiz.domain.Choice
 2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property id with lazy=false
-2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.quiz.domain.Choice:id]
+2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Choice:id]
 2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for id
 2024-04-01T18:07:57.294+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: choice.id
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property id
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.BinderHelper     : #makeIdGenerator(BasicValue([Column(id)]), id, identity, , ...)
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property content with lazy=false
-2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.quiz.domain.Choice:content]
+2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Choice:content]
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for content
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: choice.content
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property content
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
 2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : MetadataSourceProcessor property isCorrect with lazy=false
-2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.quiz.domain.Choice:isCorrect]
+2024-04-01T18:07:57.295+09:00 DEBUG 14023 --- [main] o.h.b.m.internal.AbstractPropertyHolder  : Attempting to locate auto-apply AttributeConverter for property [kdquiz.domain.Choice:isCorrect]
 2024-04-01T18:07:57.296+09:00 DEBUG 14023 --- [main] o.h.b.model.internal.BasicValueBinder    : building BasicValue for isCorrect
 2024-04-01T18:07:57.296+09:00 DEBUG 14023 --- [main] org.hibernate.mapping.BasicValue         : Skipping column re-registration: choice.is_correct
 2024-04-01T18:07:57.296+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property isCorrect
@@ -622,7 +622,7 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 2024-04-01T18:07:57.297+09:00 DEBUG 14023 --- [main] o.h.b.r.c.i.ClassLoaderServiceImpl       : HHH000194: Package not found or wo package-info.java: kdquiz.quiz.domain
 2024-04-01T18:07:57.297+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Binding entity from annotated class: kdquiz.quiz.domain.Participants
 2024-04-01T18:07:57.298+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Import with entity name Participants
-2024-04-01T18:07:57.298+09:00 DEBUG 14023 --- [main] o.h.b.i.InFlightMetadataCollectorImpl    : import name [Participants] overrode previous [{kdquiz.participants.domain.Participants}]
+2024-04-01T18:07:57.298+09:00 DEBUG 14023 --- [main] o.h.b.i.InFlightMetadataCollectorImpl    : import name [Participants] overrode previous [{kdquiz.domain.Participants}]
 2024-04-01T18:07:57.298+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.EntityBinder     : Bind entity kdquiz.quiz.domain.Participants on table participants
 2024-04-01T18:07:57.299+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedDiscriminatorColumn(column='DTYPE')
 2024-04-01T18:07:57.299+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.AnnotatedColumn  : Binding column: AnnotatedColumn()
@@ -645,8 +645,8 @@ java.lang.ClassNotFoundException: java.lang.foreign.MemorySegment
 2024-04-01T18:07:57.301+09:00 DEBUG 14023 --- [main] o.h.boot.model.internal.PropertyBinder   : Building property quiz
 2024-04-01T18:07:57.301+09:00 DEBUG 14023 --- [main] o.h.b.r.c.i.ClassLoaderServiceImpl       : HHH000194: Package not found or wo package-info.java: kdquiz.quiz.domain
 2024-04-01T18:07:57.303+09:00 DEBUG 14023 --- [main] o.hibernate.service.spi.ServiceBinding   : Overriding existing service binding [org.hibernate.engine.jdbc.connections.spi.ConnectionProvider]
-2024-04-01T18:07:57.303+09:00 ERROR 14023 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Entity classes [kdquiz.participants.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
-2024-04-01T18:07:57.305+09:00  WARN 14023 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Entity classes [kdquiz.participants.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
+2024-04-01T18:07:57.303+09:00 ERROR 14023 --- [main] j.LocalContainerEntityManagerFactoryBean : Failed to initialize JPA EntityManagerFactory: Entity classes [kdquiz.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
+2024-04-01T18:07:57.305+09:00  WARN 14023 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Entity classes [kdquiz.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
 2024-04-01T18:07:57.305+09:00  INFO 14023 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2024-04-01T18:07:57.305+09:00 DEBUG 14023 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Before shutdown stats (total=10, active=0, idle=10, waiting=0)
 2024-04-01T18:07:57.308+09:00 DEBUG 14023 --- [HikariPool-1 connection closer] com.zaxxer.hikari.pool.PoolBase          : HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@67b5e613: (connection evicted)
@@ -1822,7 +1822,7 @@ Unconditional classes:
 
 2024-04-01T18:07:57.378+09:00 ERROR 14023 --- [main] o.s.boot.SpringApplication               : Application run failed
 
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Entity classes [kdquiz.participants.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Entity classes [kdquiz.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[spring-beans-6.1.5.jar:6.1.5]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600) ~[spring-beans-6.1.5.jar:6.1.5]
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522) ~[spring-beans-6.1.5.jar:6.1.5]
@@ -1840,7 +1840,7 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-3.2.4.jar:3.2.4]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) ~[spring-boot-3.2.4.jar:3.2.4]
 	at kdquiz.KdquizApplication.main(KdquizApplication.java:10) ~[main/:na]
-Caused by: org.hibernate.DuplicateMappingException: Entity classes [kdquiz.participants.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
+Caused by: org.hibernate.DuplicateMappingException: Entity classes [kdquiz.domain.Participants] and [kdquiz.quiz.domain.Participants] share the entity name 'Participants' (entity names must be distinct)
 	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.addEntityBinding(InFlightMetadataCollectorImpl.java:339) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
 	at org.hibernate.boot.model.internal.EntityBinder.bindEntityClass(EntityBinder.java:248) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]
 	at org.hibernate.boot.model.internal.AnnotationBinder.bindClass(AnnotationBinder.java:423) ~[hibernate-core-6.4.4.Final.jar:6.4.4.Final]

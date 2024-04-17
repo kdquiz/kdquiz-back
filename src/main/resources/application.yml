@@ -50,7 +50,7 @@ spring:
             required: true
 jwt:
   secret:
-    key: 251fa760ba39a417b9062865a1afe1bfe6fd53b91d29a0c641cb15c78ee853a9
+    key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
 Email:
   id: umdmstjd@gmail.com
   pw: abkq wgdm umen vhcu

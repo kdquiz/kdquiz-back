@@ -1,10 +1,9 @@
-package kdquiz.quiz.domain;
+package kdquiz.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.aspectj.weaver.patterns.TypePatternQuestions;
 
 @Entity
 @Getter

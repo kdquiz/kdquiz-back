@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class ChoicesCreateDto {
+public class ChoiceCreateDto {
     private String content;
     private Boolean isCorrect;
 }

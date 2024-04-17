@@ -1,16 +1,15 @@
 package kdquiz.quiz.service;
 
-import kdquiz.quiz.domain.Choice;
-import kdquiz.quiz.domain.Questions;
-import kdquiz.quiz.domain.Quiz;
-import kdquiz.quiz.dto.ChoiceUpdateDto;
-import kdquiz.quiz.dto.QuestionUpdateDto;
-import kdquiz.quiz.dto.QuizUpdateDto;
+import kdquiz.domain.*;
+import kdquiz.quiz.dto.*;
 import kdquiz.ResponseDto;
 import kdquiz.quiz.repository.ChoiceRepository;
+import kdquiz.quiz.repository.OptionRepository;
 import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
+import kdquiz.usersecurity.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,13 +28,18 @@ public class QuizUpdateService {
     @Autowired
     ChoiceRepository choiceRepository;
 
+    @Autowired
+    OptionRepository optionRepository;
+
     @Transactional
-    public ResponseDto<Void> QuizUpdate(Long quizId, QuizUpdateDto quizUpdateeDto) {
+    public ResponseDto<Void> QuizUpdate(Long quizId, QuizUpdateDto quizUpdateeDto, Users users) {
 
-
+        if(users.getEmail()==null){
+            return ResponseDto.setFailed("Q303","퀴즈 업데이트 실패");
+        }
         try {
             // 기존 퀴즈를 찾음
-            Optional<Quiz> quizOptional = quizRepository.findById(quizId);
+            Optional<Quiz> quizOptional = quizRepository.findByIdAndEmail(quizId, users.getEmail());
             quizOptional.orElseThrow(()->new IllegalArgumentException("퀴즈를 찾을 수 없습니다."));
 
             if (!quizOptional.isPresent()) {
@@ -67,19 +71,30 @@ public class QuizUpdateService {
                 // 질문 엔티티 생성 및 저장
                 Questions question = questionsOptional.get();
                 System.out.println("질문 ID: "+questionUpdateDto.getId());
-                if(!question.getContent().isEmpty()){
-                    question.setContent(questionUpdateDto.getContent());
-                }
-                question.setScore(questionUpdateDto.getScore());
+
+                question.setContent(questionUpdateDto.getContent());
                 question.setUpdatedAt(LocalDateTime.now());
                 question.setQuiz(quiz); // 퀴즈와 연결
                 question = questionRepository.save(question); // 저장 후 ID를 얻기 위해 리턴값으로 받음
                 Long questionId = question.getId();
-                System.out.println("질문아이디: "+questionId);
+
+                //옵션 수정
+                OptionUpdateDto optionUpdateDto = questionUpdateDto.getOptions();
+                Optional<Options> optionOptional = optionRepository.findById(optionUpdateDto.getId());
+                Options option = optionOptional.get();
+                option.setUseHint(optionUpdateDto.getUseHint());
+                option.setHintTime(optionUpdateDto.getHintTime());
+                option.setHintContent(optionUpdateDto.getHintContent());
+                option.setUseAiFeedback(optionUpdateDto.getUseAiFeedback());
+                option.setAiQuestion(optionUpdateDto.getAiQuestion());
+                option.setCommentary(optionUpdateDto.getCommentary());
+                option.setScore(optionUpdateDto.getScore());
+                option.setQuestion(question);
+                optionRepository.save(option);
+
 
                 for (ChoiceUpdateDto choiceUpdateDto: questionUpdateDto.getChoices()) {
                     Optional<Choice> choiceOptional = choiceRepository.findById(choiceUpdateDto.getId());
-                    System.out.println("선택 ID: "+choiceUpdateDto.getId());
                     Choice choice = choiceOptional.get();
                     choice.setContent(choiceUpdateDto.getContent());
                     choice.setIsCorrect(choiceUpdateDto.getIsCorrect());

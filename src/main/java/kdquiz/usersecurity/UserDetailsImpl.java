@@ -1,6 +1,6 @@
-package kdquiz.security;
+package kdquiz.usersecurity;
 
-import kdquiz.users.domain.Users;
+import kdquiz.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

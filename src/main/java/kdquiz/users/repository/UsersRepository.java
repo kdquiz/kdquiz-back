@@ -1,6 +1,6 @@
 package kdquiz.users.repository;
 
-import kdquiz.users.domain.Users;
+import kdquiz.domain.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

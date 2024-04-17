@@ -5,7 +5,7 @@
 //import jakarta.servlet.ServletException;
 //import jakarta.servlet.http.HttpServletRequest;
 //import jakarta.servlet.http.HttpServletResponse;
-//import kdquiz.users.domain.Users;
+//import kdquiz.domain.Users;
 //import kdquiz.users.repository.UsersRepository;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.security.authentication.AbstractAuthenticationToken;

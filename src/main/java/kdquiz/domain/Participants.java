@@ -1,7 +1,6 @@
-package kdquiz.participants.domain;
+package kdquiz.domain;
 
 import jakarta.persistence.*;
-import kdquiz.quiz.domain.Quiz;
 import lombok.Getter;
 import lombok.Setter;
 

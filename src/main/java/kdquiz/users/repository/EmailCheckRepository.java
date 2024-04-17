@@ -1,6 +1,6 @@
 package kdquiz.users.repository;
 
-import kdquiz.users.domain.EmailCheck;
+import kdquiz.domain.EmailCheck;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

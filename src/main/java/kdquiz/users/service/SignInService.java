@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import kdquiz.ResponseDto;
 import kdquiz.users.jwt.JwtUtil;
-import kdquiz.users.domain.Users;
+import kdquiz.domain.Users;
 import kdquiz.users.dto.SignInDto;
 import kdquiz.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +35,14 @@ public class SignInService {
             return ResponseDto.setFailed("U103","비밀번호가 일치하지 않습니다.");
         }
         System.out.println("userEmail: "+email);
+        // 토큰 생성
         String token = jwtUtil.createToken(email);
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(email));
-        return ResponseDto.setSuccess("U003", "로그인 성공", token );
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+//        response.addHeader("Access-Control-Allow-Origin", "*");
+//        response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//        response.addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, X-Requested-With");
+
+        return ResponseDto.setSuccess("U003", "로그인 성공", token);
 
     }
 }

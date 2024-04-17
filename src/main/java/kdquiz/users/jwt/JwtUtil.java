@@ -3,7 +3,7 @@ package kdquiz.users.jwt;
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import kdquiz.security.UserDetailsServiceImpl;
+import kdquiz.usersecurity.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +47,7 @@ public class JwtUtil {
     public String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)){
+            System.out.println("토큰 값: "+bearerToken.substring(7));
             return bearerToken.substring(7);
         }
         return null;
@@ -62,6 +63,7 @@ public class JwtUtil {
                         .claim(AUTHORIZATION_KEY, "user")
                         .setExpiration(new Date(date.getTime()+TOKEN_TIME))
                         .setIssuedAt(date)
+                        .setHeaderParam("typ", "jwt")
                         .signWith(key, signatureAlgorithm)
                         .compact();
     }
@@ -69,7 +71,7 @@ public class JwtUtil {
     //토큰 검증
     public boolean validateToken(String token){
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e){
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
@@ -85,7 +87,7 @@ public class JwtUtil {
 
     //토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
     //인증 객체 생성
