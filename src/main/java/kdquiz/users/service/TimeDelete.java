@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class TimeDelete {
     private final EmailCheckRepository emailCheckRepository;
-    @Scheduled(fixedRate = 120000) // 2분마다 실행
+    @Scheduled(fixedRate = 300000) // 5분마다 실행
     @Transactional
     public void deleteOldData() {
         LocalDateTime now = LocalDateTime.now();
