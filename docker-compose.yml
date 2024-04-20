@@ -5,7 +5,7 @@ services:
     environment:
       MYSQL_DATABASE: kd-quiz
       MYSQL_ROOT_PASSWORD: 12345678
-      MYSQL_PASSWORD: 12345678
+      MYSQL_PASSWORD: dmstjd4522
     ports:
       - "3307:3306"
     networks:
