@@ -25,7 +25,7 @@ public class Quiz {
     private String type;
 
     @Column
-    private String pin;
+    private int pin;
 
     @Column
     private String email;

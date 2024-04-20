@@ -42,13 +42,13 @@ public class CustomSecuityConfig implements WebMvcConfigurer {
                 // 나머지들은 토큰 있어야 가능
                 .anyRequest().authenticated()
                 //로그인 커스텀 나중에 개발 할때 주석 처리 풀어
-                .and()
-                    .formLogin()//로그인 커스텀
-                    .loginPage("/api/v1/users/login")//로그인 페이지
-                    .loginProcessingUrl("/api/v1/users/login") //음 (form action) 값인거 같음 로그인 폼 제출 시 POST 요청을 보낼 URL
-                    .usernameParameter("/user") //이거는 form name인거 같음
-                    .defaultSuccessUrl("/api/v1/quiz/user/") //이거는 로그인 성공 하면 이 페이지로 이동 리다리렉션
-                    .permitAll()
+//                .and()
+//                    .formLogin()//로그인 커스텀
+//                    .loginPage("/api/v1/users/login")//로그인 페이지
+//                    .loginProcessingUrl("/api/v1/users/login") //음 (form action) 값인거 같음 로그인 폼 제출 시 POST 요청을 보낼 URL
+//                    .usernameParameter("/user") //이거는 form name인거 같음
+//                    .defaultSuccessUrl("/api/v1/quiz/user/") //이거는 로그인 성공 하면 이 페이지로 이동 리다리렉션
+//                    .permitAll()
                 .and()
                     .logout()//이건 로그아웃
                     .logoutRequestMatcher(new AntPathRequestMatcher("api/v1/users/logout")) //로그아웃 api

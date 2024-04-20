@@ -9,10 +9,7 @@ import kdquiz.quiz.dto.QuizGetAllDto;
 import kdquiz.quiz.dto.QuizGetDto;
 import kdquiz.quiz.dto.QuizUpdateDto;
 import kdquiz.ResponseDto;
-import kdquiz.quiz.service.QuizCreateService;
-import kdquiz.quiz.service.QuizDeleteService;
-import kdquiz.quiz.service.QuizGetService;
-import kdquiz.quiz.service.QuizUpdateService;
+import kdquiz.quiz.service.*;
 import kdquiz.usersecurity.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +35,9 @@ public class QuizController {
 
     @Autowired
     QuizGetService quizGetService;
+
+    @Autowired
+    GameCreateService gameCreateService;
 
 
     @Operation(summary = "퀴즈생성 토큰 헤더에 넣으셈")
@@ -104,6 +104,12 @@ public class QuizController {
 //    @PreAuthorize("hasRole('user')")
     public ResponseEntity<ResponseDto<Void>> QuizDelete(@PathVariable Long quizId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ResponseDto<Void> responseDto = (ResponseDto<Void>) quizDeleteService.QuizDelete(quizId, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/quiz/create/{quizId}")
+    public ResponseEntity<ResponseDto<Void>> GameCreate(@PathVariable Long quizId,  @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = (ResponseDto<Void>) gameCreateService.GameCreate(quizId, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
