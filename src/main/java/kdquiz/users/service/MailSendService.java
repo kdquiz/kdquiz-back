@@ -58,112 +58,32 @@ public class MailSendService {
         String setFrom = EmailId; // email-config에 설정한 자신의 이메일 주소를 입력
         String toMail = email;
         String title = "키득Quiz 회원가입 인증 이메일 입니다."; //이메일 제목
-        String content = "<center style=\"width: 100%\">\r\n" +
-                "  <center\r\n" +
-                "    style=\"\r\n" +
-                "      width: 700px;\r\n" +
-                "      height: 480px;\r\n" +
-                "      border-radius: 12px;\r\n" +
-                "      background-color: #85aeff;\r\n" +
-                "      margin: 12px;\r\n" +
-                "      padding: 12px;\r\n" +
-                "      display: flex;\r\n" +
-                "      flex-direction: column;\r\n" +
-                "      box-shadow: 0 4px 4px 0 rgba(51, 51, 51, 0.5);\r\n" +
-                "    \"\r\n" +
-                "  >\r\n" +
-                "    <div style=\"display: flex; width: 100%; justify-content: space-between\">\r\n" +
-                "      <div\r\n" +
-                "        style=\"\r\n" +
-                "          width: 12px;\r\n" +
-                "          height: 12px;\r\n" +
-                "          border-radius: 100%;\r\n" +
-                "          background-color: #faec71;\r\n" +
-                "          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);\r\n" +
-                "        \"\r\n" +
-                "      ></div>\r\n" +
-                "      <div\r\n" +
-                "        style=\"\r\n" +
-                "          width: 12px;\r\n" +
-                "          height: 12px;\r\n" +
-                "          border-radius: 100%;\r\n" +
-                "          background-color: #faec71;\r\n" +
-                "          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);\r\n" +
-                "        \"\r\n" +
-                "      ></div>\r\n" +
-                "    </div>\r\n" +
-                "    <div\r\n" +
-                "      style=\"\r\n" +
-                "        display: flex;\r\n" +
-                "        width: 100%;\r\n" +
-                "        height: 100%;\r\n" +
-                "        padding-left: 12px;\r\n" +
-                "        padding-right: 12px;\r\n" +
-                "      \"\r\n" +
-                "    >\r\n" +
-                "      <center\r\n" +
-                "        style=\"\r\n" +
-                "          box-shadow: 0px 2px 4px 0 rgba(51, 51, 51, 0.5);\r\n" +
-                "          display: flex;\r\n" +
-                "          width: calc(100% - 24px);\r\n" +
-                "          align-items: center;\r\n" +
-                "          justify-content: center;\r\n" +
-                "          border-radius: 12px;\r\n" +
-                "          background-color: white;\r\n" +
-                "          flex-direction: column;\r\n" +
-                "          gap: 12px;\r\n" +
-                "        \"\r\n" +
-                "      >\r\n" +
-                "        <text style=\"font-size: 36px; font-weight: 700; color: #646363\">\r\n" +
-                "          키득Quiz 가입을 환영합니다.\r\n" +
-                "        </text>\r\n" +
-                "        <text style=\"font-size: 36px; font-weight: 700; color: #646363\">\r\n" +
-                "          인증코드\r\n" + authNumber+
-                "        </text>\r\n" +
-                "        <text style=\"font-size: 72px; font-weight: 700; color: #646363\">\r\n" +
-                "        </text>\r\n" +
-                "        <a href=\"\">\r\n" +
-                "          <button\r\n" +
-                "            style=\"\r\n" +
-                "              background-color: #85aeff;\r\n" +
-                "              border: 2px;\r\n" +
-                "              border-color: #85aeff;\r\n" +
-                "              color: white;\r\n" +
-                "              width: 160px;\r\n" +
-                "              height: 42px;\r\n" +
-                "              border-radius: 6px;\r\n" +
-                "              cursor: pointer;\r\n" +
-                "            \"\r\n" +
-                "          >\r\n" +
-                "            <text style=\"font-size: 18px; font-weight: 700; color: white\">\r\n" +
-                "              페이지 바로가기\r\n" +
-                "            </text>\r\n" +
-                "          </button>\r\n" +
-                "        </a>\r\n" +
-                "      </center>\r\n" +
-                "    </div>\r\n" +
-                "    <div style=\"display: flex; width: 100%; justify-content: space-between\">\r\n" +
-                "      <div\r\n" +
-                "        style=\"\r\n" +
-                "          width: 12px;\r\n" +
-                "          height: 12px;\r\n" +
-                "          border-radius: 100%;\r\n" +
-                "          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);\r\n" +
-                "          background-color: #faec71;\r\n" +
-                "        \"\r\n" +
-                "      ></div>\r\n" +
-                "      <div\r\n" +
-                "        style=\"\r\n" +
-                "          width: 12px;\r\n" +
-                "          height: 12px;\r\n" +
-                "          border-radius: 100%;\r\n" +
-                "          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);\r\n" +
-                "          background-color: #faec71;\r\n" +
-                "        \"\r\n" +
-                "      ></div>\r\n" +
-                "    </div>\r\n" +
-                "  </center>\r\n" +
+        String content =
+                "<center style=\"width: 100%\">"+
+                    "<center style=\"      width: 700px;      height: 480px;      border-radius: 12px;      background-color: #85aeff;      margin: 12px;      padding: 12px;      display: flex;      flex-direction: column;      box-shadow: 0 4px 4px 0 rgba(51, 51, 51, 0.5);    \">"+
+                        "<div style=\"display: flex; width: 100%; justify-content: space-between\">"+
+                            "<div style=\"          width: 12px;          height: 12px;          border-radius: 100%;          background-color: #faec71;          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);        \"></div>"+
+                            "<div style=\"          width: 12px;          height: 12px;          border-radius: 100%;          background-color: #faec71;          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);        \"></div>"+
+                        "</div>"+
+                        "<div style=\"        display: flex;        width: 100%;        height: 100%;        padding-left: 12px;        padding-right: 12px;      \">"+
+                            "<center style=\"          box-shadow: 0px 2px 4px 0 rgba(51, 51, 51, 0.5);          display: flex;          width: calc(100% - 24px);          align-items: center;          justify-content: center;          border-radius: 12px;          background-color: white;          flex-direction: column;          gap: 12px;        \">"+
+                                "<xtext style=\"font-size: 36px; font-weight: 700; color: #646363\">"+
+                                "키득Quiz 가입을 환영합니다."+
+                                "</xtext>"+
+                                    "<xtext style=\"font-size: 36px; font-weight: 700; color: #646363\">"+
+                                        "인증코드"+authNumber+
+                                        "</xtext>"+
+                                "<xtext style=\"font-size: 72px; font-weight: 700; color: #646363\">"+
+                                "</xtext>"+
+                            "</center>"+
+                        "</div>"+
+                        "<div style=\"display: flex; width: 100%; justify-content: space-between\">"+
+                            "<div style=\"          width: 12px;          height: 12px;          border-radius: 100%;          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);          background-color: #faec71;        \"></div>"+
+                            "<div style=\"          width: 12px;          height: 12px;          border-radius: 100%;          box-shadow: 0px 4px 4px 0 rgba(51, 51, 51, 0.5);          background-color: #faec71;        \"></div>"+
+                        "</div>"+
+                    "</center>"+
                 "</center>";
+
 //                "키득Quiz 회원가입을 환영합니다."+
 //                        "<br><br>"+
 //                        "인증번호는[ <span><h1>"+authNumber+"</h1></span> ]입니다.";
