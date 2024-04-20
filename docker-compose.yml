@@ -19,8 +19,8 @@ services:
       - mysqldb
     environment:
       WAIT_HOSTS: mysqldb:3306
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/kd-quiz?createDatabaseIfNotExist=true&characterEncoding=UTF-8&profileSql=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_URL: "jdbc:mysql://master.c9aakqo22nrx.ap-northeast-2.rds.amazonaws.com/kd-quiz?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
+      SPRING_DATASOURCE_USERNAME: master
       SPRING_DATASOURCE_PASSWORD: 12345678
     ports:
       - "8080:8080"
