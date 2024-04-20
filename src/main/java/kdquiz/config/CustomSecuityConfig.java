@@ -49,11 +49,11 @@ public class CustomSecuityConfig implements WebMvcConfigurer {
 //                    .usernameParameter("/user") //이거는 form name인거 같음
 //                    .defaultSuccessUrl("/api/v1/quiz/user/") //이거는 로그인 성공 하면 이 페이지로 이동 리다리렉션
 //                    .permitAll()
-                .and()
-                    .logout()//이건 로그아웃
-                    .logoutRequestMatcher(new AntPathRequestMatcher("api/v1/users/logout")) //로그아웃 api
-                    .logoutSuccessUrl("/")//로그아웃 성공하면 메인페이지로 리다리렉션
-                    .permitAll()
+//                .and()
+//                    .logout()//이건 로그아웃
+//                    .logoutRequestMatcher(new AntPathRequestMatcher("api/v1/users/logout")) //로그아웃 api
+//                    .logoutSuccessUrl("/")//로그아웃 성공하면 메인페이지로 리다리렉션
+//                    .permitAll()
                 .and()
                     .addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();

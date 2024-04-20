@@ -38,6 +38,7 @@ public class GameCreateService {
         System.out.println("생성자 고유 번호: "+users.getId());
         try{
             Optional<Quiz> quizOptional = quizRepository.findByIdAndEmail(quizId, users.getEmail());
+            System.out.println("퀴즈 정보: "+quizOptional);
             quizOptional.orElseThrow(()-> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다."));
             GamePiNmNumber(users.getId());
 //            if(authNumber==0){
