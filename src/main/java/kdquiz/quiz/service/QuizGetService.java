@@ -78,6 +78,7 @@ public class QuizGetService {
 
             // QuizGetDto 객체 생성 및 퀴즈 제목과 유형 설정
             QuizGetDto quizGetDto = new QuizGetDto();
+            quizGetDto.setId(quiz.getId());
             quizGetDto.setTitle(quiz.getTitle());
             quizGetDto.setType(quiz.getType());
 
@@ -87,11 +88,14 @@ public class QuizGetService {
 
             for (Questions questions : questionsList) {
                 QuestionGetDto questionGetDto = new QuestionGetDto();
+                questionGetDto.setId(questions.getId());
                 questionGetDto.setContent(questions.getContent());
 
                 // Options 정보를 QuestionGetDto에 추가
                 Options options = questions.getOption();
                 OptionGetDto optionGetDto = new OptionGetDto();
+                optionGetDto.setId(options.getId());
+                optionGetDto.setTime(options.getTime());
                 optionGetDto.setUseHint(options.getUseHint());
                 optionGetDto.setHintTime(options.getHintTime());
                 optionGetDto.setHintContent(options.getHintContent());
@@ -108,6 +112,7 @@ public class QuizGetService {
 
                 for (Choice choice : choicesList) {
                     ChoiceGetDto choiceGetDto = new ChoiceGetDto();
+                    choiceGetDto.setId(choice.getId());
                     choiceGetDto.setContent(choice.getContent());
                     choiceGetDto.setIsCorrect(choice.getIsCorrect());
                     choiceDtos.add(choiceGetDto);

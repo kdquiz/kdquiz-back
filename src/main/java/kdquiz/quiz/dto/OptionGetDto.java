@@ -2,6 +2,8 @@ package kdquiz.quiz.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -9,6 +11,8 @@ import lombok.*;
 @Getter
 public class OptionGetDto {
     private Long id;
+
+    private int time;
 
     private Boolean useHint; //힌트여부
 

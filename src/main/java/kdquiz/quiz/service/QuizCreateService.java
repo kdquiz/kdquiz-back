@@ -62,6 +62,7 @@ public class QuizCreateService {
                 System.out.println("옵션 출력: "+questionDto.getOptions());
 
                 Options option = new Options();
+                option.setTime(optionDto.getTime());
                 option.setUseHint(optionDto.getUseHint());
                 option.setHintTime(optionDto.getHintTime());
                 option.setHintContent(optionDto.getHintContent());

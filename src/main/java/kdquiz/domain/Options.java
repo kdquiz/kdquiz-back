@@ -17,6 +17,9 @@ public class Options {
     private Long id;
 
     @Column
+    private int time=10; //시간
+
+    @Column
     private Boolean useHint=false; //힌트여부
 
     @Column
