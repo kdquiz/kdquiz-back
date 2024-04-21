@@ -36,9 +36,6 @@ public class QuizController {
     @Autowired
     QuizGetService quizGetService;
 
-    @Autowired
-    GameCreateService gameCreateService;
-
 
     @Operation(summary = "퀴즈생성 토큰 헤더에 넣으셈")
     @ApiResponses({
@@ -107,9 +104,4 @@ public class QuizController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/quiz/create/{quizId}")
-    public ResponseEntity<ResponseDto<Void>> GameCreate(@PathVariable Long quizId,  @AuthenticationPrincipal UserDetailsImpl userDetails){
-        ResponseDto<Void> responseDto = (ResponseDto<Void>) gameCreateService.GameCreate(quizId, userDetails.getUsers());
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
 }
