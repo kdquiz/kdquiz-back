@@ -6,19 +6,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import kdquiz.ResponseDto;
+import kdquiz.users.dto.*;
 import kdquiz.users.jwt.JwtUtil;
-import kdquiz.users.dto.EmailCheckDto;
-import kdquiz.users.dto.EmailDto;
-import kdquiz.users.dto.SignInDto;
-import kdquiz.users.dto.SignUpDto;
 import kdquiz.users.service.MailSendService;
 import kdquiz.users.service.SignInService;
 import kdquiz.users.service.SignUpService;
+import kdquiz.users.service.UsersGetService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1")
 public class UserController {
@@ -33,6 +33,8 @@ public class UserController {
     @Autowired
     MailSendService mailSendService;
 
+    @Autowired
+    UsersGetService usersGetService;
 
     //회원가입
     @Operation(summary = "회원가입", description = "이메일 인증 먼저하고 회원가입")
@@ -86,4 +88,9 @@ public class UserController {
         return mailSendService.CheckAuthNum(emailCheckDto.getEmail(), emailCheckDto.getAuthNum());
     }
 
+    @GetMapping("/users/get")
+    public ResponseDto<List<UserGetDto>> usersGet() {
+        ResponseDto<List<UserGetDto>> users = (ResponseDto<List<UserGetDto>>) usersGetService.getUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK).getBody();
+    }
 }

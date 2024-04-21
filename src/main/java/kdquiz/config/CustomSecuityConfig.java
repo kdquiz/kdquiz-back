@@ -37,7 +37,8 @@ public class CustomSecuityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/v1/mailAuthCheck").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll() //스웨거
                 .requestMatchers("/v3/api-docs/**").permitAll() //스웨거
-                .requestMatchers("/swagger-ui.html/**").permitAll() //스웨거
+                .requestMatchers("/swagger-ui.html/**").permitAll()//스웨거
+                .requestMatchers("/api/v1/users/get").permitAll()
 
                 // 나머지들은 토큰 있어야 가능
                 .anyRequest().authenticated()

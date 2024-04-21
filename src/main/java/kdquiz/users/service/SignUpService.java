@@ -27,7 +27,6 @@ public class SignUpService {
     public ResponseDto<?> SingUp(SignUpDto signUpDto){
         String email = signUpDto.getEmail();
         String password = signUpDto.getPassword();
-        String nickname = signUpDto.getNickname();
         Boolean check = false;
         check = mailSendService.SignUpCheck(check);
         if(!check){
@@ -37,15 +36,10 @@ public class SignUpService {
         if(foundEmail.isPresent()){
             return ResponseDto.setFailed("U102", "아이디 중복");
         }
-        Optional<Users> foundNickname = usersRepository.findByNickname(nickname);
-        if(foundNickname.isPresent()){
-            return ResponseDto.setFailed("U202", "닉넴임 중복");
-        }
         password = passwordEncoder.encode(password);
         Users users = new Users();
         users.setEmail(email);
         users.setPassword(password);
-        users.setNickname(nickname);
         users.setCreatedAt(LocalDateTime.now());
         usersRepository.save(users);
         return ResponseDto.setSuccess("U002", "회원가입 성공", null);
