@@ -45,7 +45,7 @@ public class QuizGetService {
             List<QuizGetAllDto> getList = new ArrayList<>();
             for(Quiz quiz : quizzes){
                 QuizGetAllDto getQuiz = new QuizGetAllDto();
-
+                getQuiz.setId(quiz.getId());
                 getQuiz.setTitle(quiz.getTitle());
                 getQuiz.setType(quiz.getType());
                 getQuiz.setCreate_at(quiz.getCreatedAt());
