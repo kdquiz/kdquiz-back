@@ -28,6 +28,8 @@ public class QuizGetService {
 
     @Autowired
     ChoiceRepository choiceRepository;
+    @Autowired
+    private QuizUpdateService quizUpdateService;
 
     @Transactional
     public ResponseDto<List<QuizGetAllDto>> QuizGetAll(Users users){
@@ -46,6 +48,8 @@ public class QuizGetService {
 
                 getQuiz.setTitle(quiz.getTitle());
                 getQuiz.setType(quiz.getType());
+                getQuiz.setCreate_at(quiz.getCreatedAt());
+                getQuiz.setUpdate_at(quiz.getUpdatedAt());
                 getList.add(getQuiz);
 
             }

@@ -2,6 +2,8 @@ package kdquiz.quiz.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,4 +13,6 @@ public class QuizGetAllDto {
     private Long id;
     private String title;
     private String type;
+    private LocalDateTime create_at;
+    private LocalDateTime Update_at;
 }

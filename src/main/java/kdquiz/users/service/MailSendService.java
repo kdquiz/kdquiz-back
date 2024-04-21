@@ -122,7 +122,9 @@ public class MailSendService {
 
         if (emailCheckOpt.isPresent()) {
             EmailCheck emailCheck = emailCheckOpt.get();
-
+            if(authemail == true){
+                return ResponseDto.setSuccess("U101", "이미 인증된 이메일 입니다.", null);
+            }
             // 인증번호 확인
             emailCheckRepository.delete(emailCheck);
 
