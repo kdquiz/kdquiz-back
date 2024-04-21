@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://master.c9aakqo22nrx.ap-northeast-2.rds.amazonaws.com/kd-quiz?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
+    url: "jdbc:mysql://kdquiz.c9aakqo22nrx.ap-northeast-2.rds.amazonaws.com/kd-quiz?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
     username: "master"
     password: "12345678"
   jpa:
