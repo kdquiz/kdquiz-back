@@ -32,16 +32,21 @@ public class QuizGetService {
     private QuizUpdateService quizUpdateService;
 
     @Transactional
-    public ResponseDto<List<QuizGetAllDto>> QuizGetAll(Users users){
+    public ResponseDto<List<QuizGetAllDto>> QuizGetAll(Users users, String SortBy, String searchTitle){
         try{
-            List<Quiz> quizzes = quizRepository.findByEmail(users.getEmail());
+            List<Quiz> quizzes;
+
+            if(searchTitle != null && !searchTitle.isEmpty()){
+                quizzes = quizRepository.findByEmailAndTitleContaining(users.getEmail(), searchTitle);
+            }else {
+                quizzes = quizRepository.findByEmail(users.getEmail());
+            }
+
 
             //user id를 못 찾을 경우
             if(quizzes.isEmpty()){
-                return ResponseDto.setFailed("Q102","사용자가 없음");
-
+                return ResponseDto.setFailed("Q102","퀴즈가 없음");
             }
-
             List<QuizGetAllDto> getList = new ArrayList<>();
             for(Quiz quiz : quizzes){
                 QuizGetAllDto getQuiz = new QuizGetAllDto();
@@ -51,12 +56,21 @@ public class QuizGetService {
                 getQuiz.setCreate_at(quiz.getCreatedAt());
                 getQuiz.setUpdate_at(quiz.getUpdatedAt());
                 getList.add(getQuiz);
-
+            }
+            if(SortBy.equals("Time_asc")){
+                getList.sort((q1, q2)->q1.getCreate_at().compareTo(q2.getCreate_at()));
+            }else if(SortBy.equals("Time_desc")){
+                getList.sort((q1, q2)->q2.getCreate_at().compareTo(q1.getCreate_at()));
+            }
+            if(SortBy.equals("asc")){
+                getList.sort((q1, q2)->q1.getTitle().compareTo(q2.getTitle()));
+            }else if(SortBy.equals("desc")){
+                getList.sort((q1, q2)->q2.getTitle().compareTo(q1.getTitle()));
             }
             return ResponseDto.setSuccess("Q002", "사용자가 생성한 퀴즈 목록 조회 성공", getList);
 
         } catch (Exception e) {
-            return ResponseDto.setFailed("Q202","사용자가 생성한 퀴즈 목록 조회 실패");
+            return ResponseDto.setFailed("Q202","사용자가 없음");
 
         }
 

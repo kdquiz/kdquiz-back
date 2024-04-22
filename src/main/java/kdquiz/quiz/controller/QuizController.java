@@ -57,9 +57,8 @@ public class QuizController {
             @ApiResponse(responseCode = "Q202", description = "사용자가 생성한 퀴즈 목록 조회 실패")
     })
     @GetMapping("/quiz/user")
-//    @PreAuthorize("hasRole('user')")
-    public ResponseEntity<ResponseDto<List<QuizGetAllDto>>> QuizGetAll(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        ResponseDto<List<QuizGetAllDto>> responseDto = quizGetService.QuizGetAll(userDetails.getUsers());
+    public ResponseEntity<ResponseDto<List<QuizGetAllDto>>> QuizGetAll(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(required = false, defaultValue = "Time_desc") String SortBy, @RequestParam(required = false) String searchTitle){
+        ResponseDto<List<QuizGetAllDto>> responseDto = quizGetService.QuizGetAll(userDetails.getUsers(), SortBy, searchTitle);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
