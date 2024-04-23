@@ -7,9 +7,7 @@ import kdquiz.quiz.repository.ChoiceRepository;
 import kdquiz.quiz.repository.OptionRepository;
 import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
-import kdquiz.usersecurity.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +33,7 @@ public class QuizUpdateService {
     public ResponseDto<Void> QuizUpdate(Long quizId, QuizUpdateDto quizUpdateeDto, Users users) {
 
         if(users.getEmail()==null){
-            return ResponseDto.setFailed("Q303","퀴즈 업데이트 실패");
+            return ResponseDto.setFailed("Q403","사용자 정보 가져오기 실패");
         }
         try {
             // 기존 퀴즈를 찾음
@@ -82,6 +80,7 @@ public class QuizUpdateService {
                 OptionUpdateDto optionUpdateDto = questionUpdateDto.getOptions();
                 Optional<Options> optionOptional = optionRepository.findById(optionUpdateDto.getId());
                 Options option = optionOptional.get();
+                option.setTime(optionUpdateDto.getTime());
                 option.setUseHint(optionUpdateDto.getUseHint());
                 option.setHintTime(optionUpdateDto.getHintTime());
                 option.setHintContent(optionUpdateDto.getHintContent());

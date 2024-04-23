@@ -8,6 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 public class OptionUpdateDto {
+    private int Time; //시간
     private Boolean useHint; //힌트여부
 
     private int hintTime; //힌트 시간

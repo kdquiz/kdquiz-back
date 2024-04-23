@@ -3,11 +3,8 @@ package kdquiz.quiz.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import kdquiz.quiz.dto.QuizCreateDto;
+import kdquiz.quiz.dto.*;
 
-import kdquiz.quiz.dto.QuizGetAllDto;
-import kdquiz.quiz.dto.QuizGetDto;
-import kdquiz.quiz.dto.QuizUpdateDto;
 import kdquiz.ResponseDto;
 import kdquiz.quiz.service.*;
 import kdquiz.usersecurity.UserDetailsImpl;
@@ -35,6 +32,9 @@ public class QuizController {
 
     @Autowired
     QuizGetService quizGetService;
+
+    @Autowired
+    QuestionCUDService questionCUDService;
 
 
     @Operation(summary = "퀴즈생성 토큰 헤더에 넣으셈")
@@ -86,6 +86,45 @@ public class QuizController {
 //   @PreAuthorize("hasRole('user')")
     public ResponseEntity<ResponseDto<Void>> QuizUpdate(@PathVariable Long quizId, @RequestBody QuizUpdateDto quizUpdateDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ResponseDto<Void> responseDto = quizUpdateService.QuizUpdate(quizId, quizUpdateDto, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    //Question 생성
+    @Operation(summary = "Question 생성 토큰 헤더에 넣으셈")
+    @ApiResponses({
+            @ApiResponse(responseCode = "Q003", description = "질문 생성 성공"),
+            @ApiResponse(responseCode = "Q103", description = "퀴즈를 찾을 수 없음"),
+            @ApiResponse(responseCode = "Q203", description = "질문 생성 실패"),
+            @ApiResponse(responseCode = "Q303", description = "사용자 못 찾음")
+    })
+    @PostMapping("/quiz/question/{quizId}")
+    public ResponseEntity<ResponseDto<Void>> QuestionCreateDto(@PathVariable Long quizId, @RequestBody QuizCrDto quizCrDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = questionCUDService.QuestionCreate(quizId, quizCrDto, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Question 수정 토큰 헤더에 넣으셈")
+    @ApiResponses({
+            @ApiResponse(responseCode = "Q003", description = "퀴즈 수정 성공"),
+            @ApiResponse(responseCode = "Q103", description = "퀴즈를 찾을 수 없음"),
+            @ApiResponse(responseCode = "Q203", description = "퀴즈 수정 실패"),
+            @ApiResponse(responseCode = "Q303", description = "사용자 못 찾음")
+    })
+    @PutMapping("/quiz/question/{quizId}")
+    public ResponseEntity<ResponseDto<Void>> QuestionUpdate(@PathVariable Long quizId, @RequestBody QuizUpDto quizUpDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = questionCUDService.QuestionUpdate(quizId, quizUpDto, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Question 삭제 토큰 헤더에 넣으셈")
+    @ApiResponses({
+            @ApiResponse(responseCode = "Q003", description = "질문 삭제 성공"),
+            @ApiResponse(responseCode = "Q103", description = "질문 삭제 실패"),
+            @ApiResponse(responseCode = "Q203", description = "사용자 못 찾음")
+    })
+    @DeleteMapping("/quiz/question/{quizId}/{questionId}")
+    public ResponseEntity<ResponseDto<Void>> QuestionDelete(@PathVariable Long quizId, @PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = questionCUDService.QuestionDelete(quizId, questionId, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
