@@ -11,9 +11,14 @@ public class Participants {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "quiz_id", nullable = false)
-    private Quiz quiz;
+
+    @Column
+    private Long quizId;
+
     @Column(nullable = false)
     private String nickname;
+
+    @Column
+    private int score=0;
+
 }

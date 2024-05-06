@@ -10,8 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @Setter
 @Getter
-public class QuestionCreateDto {
-    private String content;
-    private OptionCreateDto options;
-    private List<ChoiceCreateDto> choices;
+public class ImgDto {
+    private MultipartFile img;
 }

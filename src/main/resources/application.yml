@@ -49,11 +49,18 @@ spring:
             enable: true # 7
             required: true
 jwt:
+  refresh:
+    secret:
+      key: acecdd6ae217517dcdeb8db20e0aa74c6c188680101a95c60b2996a8a1cfd51a2950393e36d8154eed556cc3994c85088aa002788da9aa5e33066bc56cd12d1e
   secret:
     key: 7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA=
 Email:
   id: umdmstjd@gmail.com
   pw: abkq wgdm umen vhcu
+
+image:
+  upload:
+    path: src/main/resources/img
 
 
 # Spring Security 로그 레벨 설정

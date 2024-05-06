@@ -45,8 +45,8 @@ public class QuizController {
     })
     @PostMapping("/quiz")
 //    @PreAuthorize("hasRole('user')")
-    public ResponseEntity<ResponseDto<Void>> createQuiz(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, userDetails.getUsers());
+    public ResponseEntity<ResponseDto<Void>> createQuiz(@RequestBody QuizCreateDto quizCreateDto, @ModelAttribute ImgDto imgDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, imgDto, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

@@ -26,6 +26,9 @@ public class Questions {
         @Column
         private String content;
 
+        @Column(nullable = true)
+        private String img;
+
         @Temporal(TemporalType.TIMESTAMP)
         @Column(name = "created_at")
         private LocalDateTime createdAt;

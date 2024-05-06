@@ -52,12 +52,12 @@ public class GameCreateService {
             System.out.println("퀴즈 정보: " + quiz.getTitle());
 
             // QuizGetDto 객체 생성 및 퀴즈 제목과 유형 설정
+            String gamePin = generateRandomPin(users.getId());
             GameCreateDto gameCreateDto = new GameCreateDto();
             gameCreateDto.setTitle(quiz.getTitle());
             gameCreateDto.setType(quiz.getType());
-
-            gameCreateDto.setPin(generateRandomPin(users.getId()));
-
+            gameCreateDto.setPin(gamePin);
+            quiz.setPin(Integer.parseInt(gamePin));
 
             // Quiz와 관련된 Questions 목록을 가져옵니다.
             List<Questions> questionsList = questionRepository.findByQuiz_Id(quiz.getId());
@@ -97,9 +97,9 @@ public class GameCreateService {
 
             gameCreateDto.setQuestions(questionDtos);
 
-            return ResponseDto.setSuccess("G002", "사용자가 생성한 퀴즈 목록 조회 성공", gameCreateDto);
+            return ResponseDto.setSuccess("G002", "사용자가 생성 성공", gameCreateDto);
         } catch (Exception e) {
-            return ResponseDto.setFailed("G202", "사용자가 생성한 퀴즈 목록 조회 실패");
+            return ResponseDto.setFailed("G202", "게임 생성 실패");
         }
 
     }
