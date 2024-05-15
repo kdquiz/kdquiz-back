@@ -20,4 +20,6 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     Quiz findByPin(int pin);
 
+    Quiz findByPinAndEmail(int pin, String email);
+
 }

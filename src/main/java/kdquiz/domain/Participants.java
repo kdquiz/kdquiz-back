@@ -21,4 +21,7 @@ public class Participants {
     @Column
     private int score=0;
 
+    @Column
+    private Integer ranking=0;
+
 }

@@ -10,4 +10,5 @@ import lombok.*;
 public class ChoiceCreateDto {
     private String content;
     private Boolean isCorrect;
+    private String shortAnswer;
 }

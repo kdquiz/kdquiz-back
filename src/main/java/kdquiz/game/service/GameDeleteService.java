@@ -2,12 +2,10 @@ package kdquiz.game.service;
 
 import jakarta.transaction.Transactional;
 import kdquiz.ResponseDto;
-import kdquiz.domain.Participants;
 import kdquiz.domain.Quiz;
 import kdquiz.domain.Users;
-import kdquiz.participants.repository.ParticipantsRepositroy;
+import kdquiz.game.repository.ParticipantsRepositroy;
 import kdquiz.quiz.repository.QuizRepository;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -7,6 +7,8 @@ import kdquiz.quiz.repository.ChoiceRepository;
 import kdquiz.quiz.repository.OptionRepository;
 import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
+import kdquiz.users.repository.UsersRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 
 @Service
@@ -35,30 +38,45 @@ public class QuizCreateService {
     @Autowired
     ChoiceRepository choiceRepository;
 
+    @Autowired
+    UsersRepository usersRepository;
+
     //이미지 저장 경로
     @Value("${image.upload.path}")
     private String imageUploadPath;
 
-    private String saveImage(MultipartFile imageFile) throws IOException{
-        if(imageFile.isEmpty()){
-            throw new IllegalArgumentException("Uploaded file is empty");
-        }
 
-        String fileName = imageFile.getOriginalFilename();
-        Path imagePath = Paths.get(imageUploadPath, fileName);
-        Files.write(imagePath, imageFile.getBytes());
+    private String getImageUrl(MultipartFile file, long id) throws IOException {
 
-        String imageUrl = fileName;
-        System.out.println("imgUrl: "+imageUrl);
+        String UserId = Long.toString(id);
+        // 파일의 원래 이름을 가져옴
+        String originalFilename = file.getOriginalFilename();
+        // 파일의 확장자를 추출함
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        // 저장될 파일 이름을 생성함 (예: "image1234.jpg")
+        String savedFileName = UserId +"_"+ System.currentTimeMillis() + fileExtension;
+        // 이미지가 저장될 경로를 지정함
+        String imagePath = imageUploadPath + savedFileName;
+
+        // 이미지를 서버에 저장함
+        Path path = Paths.get(imagePath);
+        Files.write(path, file.getBytes());
+
+        // 저장된 이미지의 URL을 생성하여 반환함
+        String imageUrl = "/"+ UserId+ "/" + savedFileName; // 예시: "/images/image1234.jpg"
+
         return imageUrl;
     }
 
+
     @Transactional
-    public ResponseDto<?> createQuiz(QuizCreateDto quizCreateDto, ImgDto imgDto, Users users) {
+    public ResponseDto<?> createQuiz(QuizCreateDto quizCreateDto, MultipartFile[] files, Users users) {
         try {
             if(users.getEmail()==null){
                 return ResponseDto.setSuccess("Q301", "존재하지 않는 회원", null);
             }
+            Optional<Users> user = usersRepository.findByEmail(users.getEmail());
+            Users userId  = user.get();
             // 퀴즈 엔티티 생성 및 저장
             Quiz quiz = new Quiz();
             System.out.println("질문: "+quizCreateDto);
@@ -66,17 +84,23 @@ public class QuizCreateService {
             quiz.setType(quizCreateDto.getType());
             quiz.setCreatedAt(LocalDateTime.now());
             quiz.setEmail(users.getEmail());
-            quiz = quizRepository.save(quiz); // 저장 후 ID를 얻기 위해 리턴값으로 받음
+            quizRepository.save(quiz); // 저장 후 ID를 얻기 위해 리턴값으로 받음
 
-
+            int i=0;
             // 질문 및 선택 생성 및 연결
             for (QuestionCreateDto questionDto : quizCreateDto.getQuestions()) {
+
                 // 질문 엔티티 생성 및 저장
                 Questions question = new Questions();
-                MultipartFile multipartFile = imgDto.getImg();
-                String imageUrl = saveImage(multipartFile);
-                System.out.println(imageUrl);
-                question.setImg(imageUrl);
+                if(questionDto.getImgTF()==true) {
+                    if (files != null && i < files.length) {
+                        MultipartFile file = files[i];
+                        String imageUrl = getImageUrl(file, userId.getId());
+                        i++;
+                        question.setImg(imageUrl);
+
+                    }
+                }
                 question.setContent(questionDto.getContent());
                 question.setCreatedAt(LocalDateTime.now());
                 question.setQuiz(quiz); // 퀴즈와 연결
@@ -96,12 +120,6 @@ public class QuizCreateService {
                 option.setCommentary(optionDto.getCommentary());
                 option.setScore(optionDto.getScore());
                 option.setQuestion(question);
-
-                if(imgDto.getImg() != null && !imgDto.getImg().isEmpty()){
-                    MultipartFile imgfile = imgDto.getImg();
-                    String imgurl = saveImage(imgfile);
-                    question.setImg(imgurl);
-                }
                 optionRepository.save(option);
 
                 // 선택 엔티티 생성 및 저장
@@ -109,6 +127,7 @@ public class QuizCreateService {
                     Choice choice = new Choice();
                     choice.setContent(choicesDto.getContent());
                     choice.setIsCorrect(choicesDto.getIsCorrect());
+                    choice.setShortAnswer(choicesDto.getShortAnswer());
                     choice.setQuestion(question); // 질문과 연결
                     choiceRepository.save(choice);
                 }

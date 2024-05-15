@@ -11,4 +11,5 @@ public class ChoiceGetDto {
     private Long id;
     private String content;
     private Boolean isCorrect;
+    private String shortAnswer;
 }

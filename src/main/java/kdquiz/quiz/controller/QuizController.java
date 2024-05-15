@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -44,9 +46,9 @@ public class QuizController {
             @ApiResponse(responseCode = "Q201", description = "존재하지 않는 회원")
     })
     @PostMapping("/quiz")
-//    @PreAuthorize("hasRole('user')")
-    public ResponseEntity<ResponseDto<Void>> createQuiz(@RequestBody QuizCreateDto quizCreateDto, @ModelAttribute ImgDto imgDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, imgDto, userDetails.getUsers());
+    public ResponseEntity<ResponseDto<Void>> createQuiz(@RequestPart QuizCreateDto quizCreateDto, @RequestPart(value = "files", required = false)MultipartFile[] files, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println("files : "+files);
+        ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, files, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -84,8 +86,8 @@ public class QuizController {
     })
     @PutMapping("/quiz/{quizId}")
 //   @PreAuthorize("hasRole('user')")
-    public ResponseEntity<ResponseDto<Void>> QuizUpdate(@PathVariable Long quizId, @RequestBody QuizUpdateDto quizUpdateDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        ResponseDto<Void> responseDto = quizUpdateService.QuizUpdate(quizId, quizUpdateDto, userDetails.getUsers());
+    public ResponseEntity<ResponseDto<Void>> QuizUpdate(@PathVariable Long quizId, @RequestPart QuizUpdateDto quizUpdateDto, @RequestPart(value = "files", required = false)MultipartFile[] files, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = quizUpdateService.QuizUpdate(quizId, quizUpdateDto, files, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 

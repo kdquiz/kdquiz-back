@@ -11,4 +11,6 @@ public interface ChoiceRepository extends JpaRepository<Choice, Long> {
 
     Optional<Choice> findById(Long id);
     List<Choice> findByQuestion_Id(Long id);
+    Choice findByIdAndQuestion_Id(Long id, Long questionId);
+    Choice findByShortAnswerAndQuestion_Id(String answer, Long questionId);
 }

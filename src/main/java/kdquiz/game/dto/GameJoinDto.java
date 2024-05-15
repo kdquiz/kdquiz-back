@@ -1,4 +1,4 @@
-package kdquiz.participants.dto;
+package kdquiz.game.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class ParticipantsDto {
+public class GameJoinDto {
     private int pin;
     private String nickname;
 }

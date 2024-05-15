@@ -32,6 +32,7 @@ public class GameCreateService {
     @Autowired
     ChoiceRepository choiceRepository;
 
+
     public String generateRandomPin(Long id) {
         String randomPin = RandomStringUtils.randomNumeric(6); // 6자리 숫자로 이루어진 랜덤 문자열 생성
 
@@ -54,6 +55,7 @@ public class GameCreateService {
             // QuizGetDto 객체 생성 및 퀴즈 제목과 유형 설정
             String gamePin = generateRandomPin(users.getId());
             GameCreateDto gameCreateDto = new GameCreateDto();
+            gameCreateDto.setId(quiz.getId());
             gameCreateDto.setTitle(quiz.getTitle());
             gameCreateDto.setType(quiz.getType());
             gameCreateDto.setPin(gamePin);
@@ -66,10 +68,12 @@ public class GameCreateService {
             for (Questions questions : questionsList) {
                 QuestionGetDto questionGetDto = new QuestionGetDto();
                 questionGetDto.setContent(questions.getContent());
+                questionGetDto.setId(questions.getId());
 
                 // Options 정보를 QuestionGetDto에 추가
                 Options options = questions.getOption();
                 OptionGetDto optionGetDto = new OptionGetDto();
+                optionGetDto.setId(options.getId());
                 optionGetDto.setUseHint(options.getUseHint());
                 optionGetDto.setHintTime(options.getHintTime());
                 optionGetDto.setHintContent(options.getHintContent());
@@ -77,7 +81,6 @@ public class GameCreateService {
                 optionGetDto.setAiQuestion(options.getAiQuestion());
                 optionGetDto.setCommentary(options.getCommentary());
                 optionGetDto.setScore(options.getScore());
-
                 questionGetDto.setOptions(optionGetDto);
 
                 // Choices 목록을 가져와서 QuestionGetDto에 추가
@@ -86,8 +89,10 @@ public class GameCreateService {
 
                 for (Choice choice : choicesList) {
                     ChoiceGetDto choiceGetDto = new ChoiceGetDto();
+                    choiceGetDto.setId(choice.getId());
                     choiceGetDto.setContent(choice.getContent());
                     choiceGetDto.setIsCorrect(choice.getIsCorrect());
+                    choiceGetDto.setShortAnswer(choice.getShortAnswer());
                     choiceDtos.add(choiceGetDto);
                 }
 
@@ -103,4 +108,5 @@ public class GameCreateService {
         }
 
     }
+
 }

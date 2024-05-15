@@ -12,6 +12,7 @@ import kdquiz.quiz.repository.ChoiceRepository;
 import kdquiz.quiz.repository.OptionRepository;
 import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
+import kdquiz.users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,9 @@ public class QuestionCUDService {
 
     @Autowired
     OptionRepository optionRepository;
+
+    @Autowired
+    UsersRepository usersRepository;
 
     //Question 추가
     @Transactional

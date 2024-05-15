@@ -14,5 +14,6 @@ public class QuestionUpdateDto {
     private String content;
     private List<ChoiceUpdateDto> choices;
     private OptionUpdateDto options;
+    private Boolean imgTF;
 
 }

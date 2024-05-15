@@ -23,5 +23,8 @@ public class Choice {
     private String content;
 
     @Column
-    private Boolean isCorrect;
+    private Boolean isCorrect=false;
+
+    @Column
+    private String shortAnswer="";
 }

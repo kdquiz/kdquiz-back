@@ -60,8 +60,12 @@ Email:
 
 image:
   upload:
-    path: src/main/resources/img
+    path: src/main/resources/static/img
 
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 # Spring Security 로그 레벨 설정
 logging:

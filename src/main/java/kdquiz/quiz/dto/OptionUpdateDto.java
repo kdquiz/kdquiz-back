@@ -24,4 +24,5 @@ public class OptionUpdateDto {
     private int score; //점수
 
     private Long id;
+
 }

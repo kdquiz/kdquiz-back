@@ -8,7 +8,9 @@ import lombok.*;
 @Setter
 @Getter
 public class ChoiceUpdateDto {
+    private Long id;
     private String content;
     private Boolean isCorrect;
-    private Long id;
+    private String shortAnswer;
+
 }

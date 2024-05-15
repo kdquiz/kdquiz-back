@@ -14,4 +14,5 @@ public class QuestionCreateDto {
     private String content;
     private OptionCreateDto options;
     private List<ChoiceCreateDto> choices;
+    private Boolean imgTF;
 }

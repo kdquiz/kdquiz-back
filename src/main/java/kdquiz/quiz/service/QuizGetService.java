@@ -104,6 +104,7 @@ public class QuizGetService {
                 QuestionGetDto questionGetDto = new QuestionGetDto();
                 questionGetDto.setId(questions.getId());
                 questionGetDto.setContent(questions.getContent());
+                questionGetDto.setImgUrl(questions.getImg());
 
                 // Options 정보를 QuestionGetDto에 추가
                 Options options = questions.getOption();
@@ -129,6 +130,7 @@ public class QuizGetService {
                     choiceGetDto.setId(choice.getId());
                     choiceGetDto.setContent(choice.getContent());
                     choiceGetDto.setIsCorrect(choice.getIsCorrect());
+                    choiceGetDto.setShortAnswer(choice.getShortAnswer());
                     choiceDtos.add(choiceGetDto);
                 }
 

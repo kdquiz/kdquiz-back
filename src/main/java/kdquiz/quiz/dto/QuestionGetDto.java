@@ -15,4 +15,5 @@ public class QuestionGetDto {
     private String content;
     private OptionGetDto options;
     private List<ChoiceGetDto> choices;
+    private String imgUrl;
 }
