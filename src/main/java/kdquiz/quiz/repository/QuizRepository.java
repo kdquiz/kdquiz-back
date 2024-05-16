@@ -1,5 +1,6 @@
 package kdquiz.quiz.repository;
 
+import kdquiz.domain.Questions;
 import kdquiz.domain.Quiz;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -21,5 +22,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
     Quiz findByPin(int pin);
 
     Quiz findByPinAndEmail(int pin, String email);
+
+    Quiz findByQuestions(List<Questions> questions);
 
 }

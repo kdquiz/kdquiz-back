@@ -10,5 +10,5 @@ import java.util.List;
 @Setter
 @Getter
 public class QuizUpDto {
-    private List<QuestionUpDto> questions;
+    private List<QuestionUpdateDto> questions;
 }

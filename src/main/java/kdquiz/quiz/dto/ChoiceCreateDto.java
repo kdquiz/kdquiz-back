@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 public class ChoiceCreateDto {
-    private String content;
-    private Boolean isCorrect;
-    private String shortAnswer;
+    private String content="";
+    private Boolean isCorrect=false;
+    private String shortAnswer="";
 }

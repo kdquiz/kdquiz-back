@@ -21,8 +21,8 @@ public class Quiz {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private String type;
+    @Column
+    private String type="";
 
     @Column
     private int pin;

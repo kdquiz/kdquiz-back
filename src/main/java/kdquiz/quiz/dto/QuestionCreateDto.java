@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 @Getter
 public class QuestionCreateDto {
-    private String content;
+    private String content="";
     private OptionCreateDto options;
     private List<ChoiceCreateDto> choices;
-    private Boolean imgTF;
+    private Boolean imgTF=false;
 }

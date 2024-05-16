@@ -3,6 +3,7 @@ package kdquiz.quiz.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import kdquiz.domain.Quiz;
 import kdquiz.quiz.dto.*;
 
 import kdquiz.ResponseDto;
@@ -15,7 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 
@@ -36,8 +36,21 @@ public class QuizController {
     QuizGetService quizGetService;
 
     @Autowired
-    QuestionCUDService questionCUDService;
+    QuestionCRUDService questionCRUDService;
 
+
+//    @Operation(summary = "퀴즈생성 토큰 헤더에 넣으셈")
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "Q001", description = "퀴즈 생성 성공"),
+//            @ApiResponse(responseCode = "Q101", description = "퀴즈 생성 실패"),
+//            @ApiResponse(responseCode = "Q201", description = "존재하지 않는 회원")
+//    })
+//    @PostMapping("/quiz")
+//    public ResponseEntity<ResponseDto<Void>> createQuiz(@RequestPart QuizCreateDto quizCreateDto, @RequestPart(value = "files", required = false)MultipartFile[] files, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        System.out.println("files : "+files);
+//        ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, files, userDetails.getUsers());
+//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+//    }
 
     @Operation(summary = "퀴즈생성 토큰 헤더에 넣으셈")
     @ApiResponses({
@@ -46,11 +59,25 @@ public class QuizController {
             @ApiResponse(responseCode = "Q201", description = "존재하지 않는 회원")
     })
     @PostMapping("/quiz")
-    public ResponseEntity<ResponseDto<Void>> createQuiz(@RequestPart QuizCreateDto quizCreateDto, @RequestPart(value = "files", required = false)MultipartFile[] files, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        System.out.println("files : "+files);
-        ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, files, userDetails.getUsers());
+    public ResponseEntity<ResponseDto<?>> CreateQuiz(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
+    @Operation(summary = "퀴즈 수정 토큰 헤더에 넣으셈")
+    @ApiResponses({
+            @ApiResponse(responseCode = "Q003", description = "퀴즈 수정 성공"),
+            @ApiResponse(responseCode = "Q103", description = "퀴즈를 찾을 수 없음"),
+            @ApiResponse(responseCode = "Q203", description = "퀴즈 수정 실패"),
+            @ApiResponse(responseCode = "Q303", description = "사용자 못 찾음")
+    })
+    @PutMapping("/quiz/{quizId}")
+
+    public ResponseEntity<ResponseDto<Void>> QuizUpdate(@PathVariable Long quizId, @RequestPart QuizUpdateDto quizUpdateDto, @RequestPart(value = "files", required = false)MultipartFile[] files, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = quizUpdateService.QuizUpdate(quizId, quizUpdateDto, files, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
 
     @Operation(summary = "사용자가 생성한 모든 퀴즈조회 토큰 헤더에 넣으셈")
     @ApiResponses({
@@ -77,19 +104,6 @@ public class QuizController {
 
     }
 
-    @Operation(summary = "퀴즈 수정 토큰 헤더에 넣으셈")
-    @ApiResponses({
-            @ApiResponse(responseCode = "Q003", description = "퀴즈 수정 성공"),
-            @ApiResponse(responseCode = "Q103", description = "퀴즈를 찾을 수 없음"),
-            @ApiResponse(responseCode = "Q203", description = "퀴즈 수정 실패"),
-            @ApiResponse(responseCode = "Q303", description = "사용자 못 찾음")
-    })
-    @PutMapping("/quiz/{quizId}")
-//   @PreAuthorize("hasRole('user')")
-    public ResponseEntity<ResponseDto<Void>> QuizUpdate(@PathVariable Long quizId, @RequestPart QuizUpdateDto quizUpdateDto, @RequestPart(value = "files", required = false)MultipartFile[] files, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        ResponseDto<Void> responseDto = quizUpdateService.QuizUpdate(quizId, quizUpdateDto, files, userDetails.getUsers());
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
 
     //Question 생성
     @Operation(summary = "Question 생성 토큰 헤더에 넣으셈")
@@ -101,9 +115,10 @@ public class QuizController {
     })
     @PostMapping("/quiz/question/{quizId}")
     public ResponseEntity<ResponseDto<Void>> QuestionCreateDto(@PathVariable Long quizId, @RequestBody QuizCrDto quizCrDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        ResponseDto<Void> responseDto = questionCUDService.QuestionCreate(quizId, quizCrDto, userDetails.getUsers());
+        ResponseDto<Void> responseDto = questionCRUDService.QuestionCreate(quizId, quizCrDto, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
+
 
     @Operation(summary = "Question 수정 토큰 헤더에 넣으셈")
     @ApiResponses({
@@ -112,9 +127,22 @@ public class QuizController {
             @ApiResponse(responseCode = "Q203", description = "퀴즈 수정 실패"),
             @ApiResponse(responseCode = "Q303", description = "사용자 못 찾음")
     })
-    @PutMapping("/quiz/question/{quizId}")
-    public ResponseEntity<ResponseDto<Void>> QuestionUpdate(@PathVariable Long quizId, @RequestBody QuizUpDto quizUpDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        ResponseDto<Void> responseDto = questionCUDService.QuestionUpdate(quizId, quizUpDto, userDetails.getUsers());
+    @PutMapping("/quiz/question/{questionId}")
+    public ResponseEntity<ResponseDto<Void>> QuestionUpdate(@PathVariable Long questionId, @RequestBody QuizUpDto quizUpDto, @RequestPart(value = "files", required = false)MultipartFile[] files, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = questionCRUDService.QuestionUpdate(questionId, quizUpDto, files, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Question 질문조회 토큰 헤더에 넣으셈")
+    @ApiResponses({
+            @ApiResponse(responseCode = "Q003", description = "퀴즈 수정 성공"),
+            @ApiResponse(responseCode = "Q103", description = "퀴즈를 찾을 수 없음"),
+            @ApiResponse(responseCode = "Q203", description = "퀴즈 수정 실패"),
+            @ApiResponse(responseCode = "Q303", description = "사용자 못 찾음")
+    })
+    @GetMapping("quiz/question/{questionId}")
+    public ResponseEntity<ResponseDto<QuestionGetDto>> QuestionGet(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<QuestionGetDto> responseDto = questionCRUDService.QuestionGet(questionId, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -124,9 +152,9 @@ public class QuizController {
             @ApiResponse(responseCode = "Q103", description = "질문 삭제 실패"),
             @ApiResponse(responseCode = "Q203", description = "사용자 못 찾음")
     })
-    @DeleteMapping("/quiz/question/{quizId}/{questionId}")
-    public ResponseEntity<ResponseDto<Void>> QuestionDelete(@PathVariable Long quizId, @PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        ResponseDto<Void> responseDto = questionCUDService.QuestionDelete(quizId, questionId, userDetails.getUsers());
+    @DeleteMapping("/quiz/question/{questionId}")
+    public ResponseEntity<ResponseDto<Void>> QuestionDelete(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = questionCRUDService.QuestionDelete(questionId, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
@@ -138,7 +166,6 @@ public class QuizController {
             @ApiResponse(responseCode = "Q304", description = "사용자 못 찾음")
     })
     @DeleteMapping("/quiz/{quizId}")
-//    @PreAuthorize("hasRole('user')")
     public ResponseEntity<ResponseDto<Void>> QuizDelete(@PathVariable Long quizId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ResponseDto<Void> responseDto = (ResponseDto<Void>) quizDeleteService.QuizDelete(quizId, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);

@@ -11,6 +11,4 @@ import java.util.List;
 @Getter
 public class QuizCreateDto {
     private String title;
-    private String type;
-    private List<QuestionCreateDto> questions;
 }
