@@ -20,7 +20,7 @@ public class Choice {
     private Questions question;
 
     @Column
-    private String content;
+    private String content="";
 
     @Column
     private Boolean isCorrect=false;

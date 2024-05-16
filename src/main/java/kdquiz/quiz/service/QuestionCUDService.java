@@ -1,13 +1,8 @@
 package kdquiz.quiz.service;
 
 import kdquiz.ResponseDto;
-import kdquiz.domain.Questions;
-import kdquiz.domain.Quiz;
-import kdquiz.domain.Users;
-import kdquiz.quiz.dto.QuestionCrDto;
-import kdquiz.quiz.dto.QuestionUpDto;
-import kdquiz.quiz.dto.QuizCrDto;
-import kdquiz.quiz.dto.QuizUpDto;
+import kdquiz.domain.*;
+import kdquiz.quiz.dto.*;
 import kdquiz.quiz.repository.ChoiceRepository;
 import kdquiz.quiz.repository.OptionRepository;
 import kdquiz.quiz.repository.QuestionRepository;
@@ -66,22 +61,21 @@ public class QuestionCUDService {
                 question.setQuiz(quiz); // 퀴즈와 연결
                 questionRepository.save(question);
 
+                Options options = new Options();
+                options.setQuestion(question);
+                optionRepository.save(options);
+
+                Choice choice = new Choice();
+                choice.setContent("");
+                choice.setIsCorrect(false);
+                choice.setShortAnswer("");
+                choice.setQuestion(question);
+                choiceRepository.save(choice);
+
             }
             return ResponseDto.setSuccess("Q003", "퀴즈 업데이트 성공", null);
-//                    ResponseDto.<Void>builder()
-//                    .code("Q003")
-//                    .status(200)
-//                    .message("퀴즈 업데이트 성공")
-//                    .data(null)
-//                    .build();
         } catch (Exception e) {
             return ResponseDto.setFailed("Q203","퀴즈 업데이트 실패");
-//                    ResponseDto.<Void>builder()
-//                    .code("Q103")
-//                    .status(500)
-//                    .message("퀴즈 업데이트 실패")
-//                    .data(null)
-//                    .build();
         }
     }
 
