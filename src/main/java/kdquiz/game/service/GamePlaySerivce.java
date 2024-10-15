@@ -34,8 +34,8 @@ public class GamePlaySerivce {
 
     @Transactional
     public ResponseDto<?> Answer(int pin, long quiestionId, long playerId, String answer) {
-        Optional<Participants> participantList = participantsRepositroy.findById(playerId);
-        Participants participants = participantList.get();
+        Optional<Participant> participantList = participantsRepositroy.findById(playerId);
+        Participant participant = participantList.get();
         Optional<Options> optionsList = optionRepository.findByQuestion_Id(quiestionId);
         Options options = optionsList.get();
         int score = options.getScore();
@@ -44,27 +44,27 @@ public class GamePlaySerivce {
             long number = Long.parseLong(answer);
             Choice choice = choiceRepository.findByIdAndQuestion_Id(number, quiestionId);
             if(choice.getIsCorrect()==true) {
-                int sum = participants.getScore();
+                int sum = participant.getScore();
                 sum += score;
-                participants.setScore(sum);
-                participantsRepositroy.save(participants);
-                return ResponseDto.setSuccess("A001", "정답", participants);
+                participant.setScore(sum);
+                participantsRepositroy.save(participant);
+                return ResponseDto.setSuccess("A001", "정답", participant);
             }else {
-                return ResponseDto.setSuccess("A101", "오답", participants);
+                return ResponseDto.setSuccess("A101", "오답", participant);
             }
         }catch (NumberFormatException e) {
             Choice choice = choiceRepository.findByShortAnswerAndQuestion_Id(answer, quiestionId);
             if(choice==null){
-                return ResponseDto.setSuccess("A101", "오답", participants);
+                return ResponseDto.setSuccess("A101", "오답", participant);
             }else{
-                int sum = participants.getScore();
+                int sum = participant.getScore();
                 sum += score;
-                participants.setScore(sum);
-                participantsRepositroy.save(participants);
-                return ResponseDto.setSuccess("A001", "정답", participants);
+                participant.setScore(sum);
+                participantsRepositroy.save(participant);
+                return ResponseDto.setSuccess("A001", "정답", participant);
             }
         }catch (Exception e){
-            return ResponseDto.setSuccess("A101", "오답", participants);
+            return ResponseDto.setSuccess("A101", "오답", participant);
         }
 
 

@@ -5,6 +5,7 @@ import kdquiz.domain.EmailCheck;
 import kdquiz.domain.Users;
 import kdquiz.users.repository.EmailCheckRepository;
 import kdquiz.users.repository.UsersRepository;
+import kdquiz.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -34,6 +35,9 @@ public class MailSendService {
     private UsersRepository usersRepository;
 
     private Boolean authemail = false;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
 
 
@@ -108,33 +112,48 @@ public class MailSendService {
                 e.printStackTrace();//e.printStackTrace()는 예외를 기본 오류 스트림에 출력하는 메서드
             return ResponseDto.setFailed("U201", "이메일 전송 실패");
             }
-        EmailCheck emailCheck = new EmailCheck();
-        emailCheck.setEmail(toMail);
-        emailCheck.setAuth(Integer.toString(authNumber));
-        emailCheck.setCreatedAt(LocalDateTime.now());
-        emailCheckRepository.save(emailCheck);
+        redisUtil.setDataExpire(String.valueOf(authNumber), toMail, 60*5L);
+//        EmailCheck emailCheck = new EmailCheck();
+//        emailCheck.setEmail(toMail);
+//        emailCheck.setAuth(Integer.toString(authNumber));
+//        emailCheck.setCreatedAt(LocalDateTime.now());
+//        emailCheckRepository.save(emailCheck);
         return ResponseDto.setSuccess("U001", "이메일 전송 성공", null);
     }
 
     //이메일 인증
     public ResponseDto<?> CheckAuthNum(String email, String authNum){
-        Optional<EmailCheck> emailCheckOpt = emailCheckRepository.findByEmailAndAuth(email, authNum);
+//        Optional<EmailCheck> emailCheckOpt = emailCheckRepository.findByEmailAndAuth(email, authNum);
+        if(authemail==true){
+            return ResponseDto.setSuccess("U101", "이미 인증된 이메일 입니다.", null);
 
-        if (emailCheckOpt.isPresent()) {
-            EmailCheck emailCheck = emailCheckOpt.get();
-            if(authemail == true){
-                return ResponseDto.setSuccess("U101", "이미 인증된 이메일 입니다.", null);
-            }
-            // 인증번호 확인
-            emailCheckRepository.delete(emailCheck);
-
-            // 인증 성공 처리
-            authemail = true;
-            return ResponseDto.setSuccess("U001", "이메일 인증이 되었습니다.", null);
-        } else {
-            // 인증 실패 처리
+        }else if(redisUtil.getData(authNum)==null){
             return ResponseDto.setFailed("U201", "인증번호가 다릅니다.");
+
+        }else if(redisUtil.getData(authNum).equals(email)){
+            authemail = true;
+            redisUtil.deleteData(authNum);
+            return ResponseDto.setSuccess("U001", "이메일 인증이 되었습니다.", null);
+
+        }else{
+            return ResponseDto.setFailed("U201", "다시 인증 부탁드립니다.");
         }
+
+//        if (emailCheckOpt.isPresent()) {
+//            EmailCheck emailCheck = emailCheckOpt.get();
+//            if(authemail == true){
+//                return ResponseDto.setSuccess("U101", "이미 인증된 이메일 입니다.", null);
+//            }
+//            // 인증번호 확인
+//            emailCheckRepository.delete(emailCheck);
+//
+//            // 인증 성공 처리
+//            authemail = true;
+//            return ResponseDto.setSuccess("U001", "이메일 인증이 되었습니다.", null);
+//        } else {
+//            // 인증 실패 처리
+//            return ResponseDto.setFailed("U201", "인증번호가 다릅니다.");
+//        }
     }
 
     public Boolean SignUpCheck(Boolean check) {

@@ -1,32 +1,39 @@
 package kdquiz.users.controller;
 
+import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import kdquiz.ResponseDto;
 import kdquiz.users.dto.*;
+import kdquiz.users.jwt.JwtException;
 import kdquiz.users.jwt.JwtUtil;
 import kdquiz.users.service.MailSendService;
 import kdquiz.users.service.SignInService;
 import kdquiz.users.service.SignUpService;
 import kdquiz.users.service.UsersGetService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@Log4j2
 public class UserController {
     @Autowired
     SignUpService signUpService;
 
     @Autowired
     SignInService signInService;
+
     @Autowired
     JwtUtil jwtUtil;
 
@@ -93,4 +100,49 @@ public class UserController {
         ResponseDto<List<UserGetDto>> users = (ResponseDto<List<UserGetDto>>) usersGetService.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK).getBody();
     }
+
+    @Operation(summary = "refresh-Token 발급 (기존 토큰 10분 밑으로 남았을때 리프레쉬 토큰 발급)")
+    @PostMapping("/refresh")
+    public ResponseDto<?> refreshToken(@RequestHeader("Authorization")String authHeader, HttpServletResponse response){
+        if(authHeader==null || authHeader.length()<7){
+            throw new JwtException("INVALID STRING");
+        }
+        String accessToken = authHeader.substring(7);
+        Claims info = jwtUtil.getUserInfoFromToken(accessToken);
+        String email = info.getSubject();
+
+        if(checkExpiredToken(accessToken)==false){
+            return ResponseDto.setFailed("U103", "만료된 토큰");
+        }
+
+       Date date = info.getExpiration();
+       int exp = (int) (date.getTime()/1000);
+       if(checkTime((Integer) exp)==true){
+           String refresh = jwtUtil.createRefreshToken(email);
+           response.addHeader(JwtUtil.AUTHORIZATION_HEADER, refresh);
+           return ResponseDto.setSuccess("U003", "리프레쉬 토큰", refresh);
+       }
+        return ResponseDto.setSuccess("U003", "기존 토큰", authHeader);
+    }
+
+    private boolean checkTime(Integer exp){
+        Date dateExp = new Date((long) exp*1000);
+
+        long gap = dateExp.getTime() - System.currentTimeMillis();
+        long leftMin = gap/(1000*60);
+        log.info("토큰 만료 시간: "+leftMin);
+        return leftMin<10;
+    }
+
+    private boolean checkExpiredToken(String token) {
+        try {
+             jwtUtil.validateToken(token);
+        } catch (JwtException ex) {
+            if (ex.getMessage().equals("Expried JWT token, 만료된 JWT token 입니다.")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

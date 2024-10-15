@@ -55,14 +55,21 @@ public class GameController {
             @ApiResponse(responseCode = "G102", description = "사용자가 없음"),
             @ApiResponse(responseCode = "G202", description = "게임 생성 실패")
     })
+    @MessageMapping("/createRoom")
+    @SendTo("/topic/rooms")
     @GetMapping("/game/{quizId}")
-    public ResponseEntity<ResponseDto<GameCreateDto>> GameGet(@PathVariable Long quizId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ResponseDto<GameCreateDto>> gameGet(@PathVariable Long quizId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ResponseDto<GameCreateDto> responseDto = gameCreateService.GameGet(quizId, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
 
     }
 
-
+    @Operation(summary = "게임 참가")
+    @PostMapping("/gameJoin")
+    public ResponseEntity<ResponseDto<GameJoinDto>> gameJoin(GameJoinDto gameJoinDto){
+        ResponseDto<GameJoinDto> responseDto =  gameJoinService.ParticipantsGame(gameJoinDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
     @Operation(summary = "게임 종료")
     @ApiResponses({
             @ApiResponse(responseCode = "G001", description = "게임 종료 성공"),
@@ -90,5 +97,4 @@ public class GameController {
         ResponseDto<Void> responseDto = (ResponseDto<Void>) gameRankingService.Rank(pin);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
-
 }

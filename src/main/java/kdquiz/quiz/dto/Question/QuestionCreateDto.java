@@ -1,7 +1,8 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Question;
 
+import kdquiz.quiz.dto.Choice.ChoiceCreateDto;
+import kdquiz.quiz.dto.Option.OptionCreateDto;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,5 +15,4 @@ public class QuestionCreateDto {
     private String content="";
     private OptionCreateDto options;
     private List<ChoiceCreateDto> choices;
-    private Boolean imgTF=false;
 }

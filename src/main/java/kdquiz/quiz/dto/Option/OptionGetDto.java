@@ -1,4 +1,4 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Option;
 
 import lombok.*;
 
@@ -7,8 +7,11 @@ import lombok.*;
 @NoArgsConstructor
 @Setter
 @Getter
-public class OptionUpdateDto {
-    private int Time; //시간
+public class OptionGetDto {
+    private Long id;
+
+    private int time;
+
     private Boolean useHint; //힌트여부
 
     private int hintTime; //힌트 시간
@@ -22,7 +25,4 @@ public class OptionUpdateDto {
     private String commentary; //해설
 
     private int score; //점수
-
-    private Long id;
-
 }

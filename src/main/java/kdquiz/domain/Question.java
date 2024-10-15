@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class Questions {
+public class Question {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(nullable = false, updatable = false)
@@ -26,8 +27,8 @@ public class Questions {
         @Column
         private String content;
 
-        @Column(nullable = true)
-        private String img;
+        @ElementCollection
+        private List<QuizImg> imageList = new ArrayList<>();
 
         @Temporal(TemporalType.TIMESTAMP)
         @Column(name = "created_at")
@@ -45,6 +46,6 @@ public class Questions {
         private List<Choice> Choice;
 
         @OneToOne(mappedBy = "question", cascade = CascadeType.REMOVE)
-        private Options Option;
+        private Options Options;
 
 }

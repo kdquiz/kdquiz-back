@@ -1,12 +1,14 @@
 package kdquiz.quiz.service;
 
-import kdquiz.domain.*;
-import kdquiz.quiz.dto.*;
 import kdquiz.ResponseDto;
-import kdquiz.quiz.repository.ChoiceRepository;
-import kdquiz.quiz.repository.OptionRepository;
-import kdquiz.quiz.repository.QuestionRepository;
-import kdquiz.quiz.repository.QuizRepository;
+import kdquiz.domain.*;
+import kdquiz.quiz.dto.Choice.ChoiceGetDto;
+import kdquiz.quiz.dto.Img.ImgGetDto;
+import kdquiz.quiz.dto.Option.OptionGetDto;
+import kdquiz.quiz.dto.Question.QuestionGetDto;
+import kdquiz.quiz.dto.Quiz.QuizGetAllDto;
+import kdquiz.quiz.dto.Quiz.QuizGetDto;
+import kdquiz.quiz.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,22 +19,31 @@ import java.util.Optional;
 
 @Service
 public class QuizGetService {
-    @Autowired
-    QuizRepository quizRepository;
 
-    @Autowired
-    QuestionRepository questionRepository;
+    private final QuizRepository quizRepository;
 
-    @Autowired
-    OptionRepository optionRepository;
+    private final QuestionRepository questionRepository;
 
-    @Autowired
-    ChoiceRepository choiceRepository;
-    @Autowired
-    private QuizUpdateService quizUpdateService;
+    private final OptionRepository optionRepository;
+
+    private final ChoiceRepository choiceRepository;
+
+    private final QuizImgRepository quizImgRepository;
+
+    private final QuizUpdateService quizUpdateService;
+
+
+    public QuizGetService(QuizRepository quizRepository, QuestionRepository questionRepository, OptionRepository optionRepository, ChoiceRepository choiceRepository, QuizImgRepository quizImgRepository, QuizUpdateService quizUpdateService) {
+        this.quizRepository = quizRepository;
+        this.questionRepository = questionRepository;
+        this.optionRepository = optionRepository;
+        this.choiceRepository = choiceRepository;
+        this.quizImgRepository = quizImgRepository;
+        this.quizUpdateService = quizUpdateService;
+    }
 
     @Transactional
-    public ResponseDto<List<QuizGetAllDto>> QuizGetAll(Users users, String SortBy, String searchTitle){
+    public ResponseDto<List<QuizGetAllDto>> quizGetAll(Users users, String SortBy, String searchTitle){
         try{
             List<Quiz> quizzes;
 
@@ -52,7 +63,6 @@ public class QuizGetService {
                 QuizGetAllDto getQuiz = new QuizGetAllDto();
                 getQuiz.setId(quiz.getId());
                 getQuiz.setTitle(quiz.getTitle());
-                getQuiz.setType(quiz.getType());
                 getQuiz.setCreate_at(quiz.getCreatedAt());
                 getQuiz.setUpdate_at(quiz.getUpdatedAt());
                 getList.add(getQuiz);
@@ -78,7 +88,7 @@ public class QuizGetService {
 
 
     @Transactional
-    public ResponseDto<QuizGetDto> QuizGet(Long quizId, Users users){
+    public ResponseDto<QuizGetDto> quizGet(Long quizId, Users users){
         try{
             Optional<Quiz> quizOptional = quizRepository.findByEmailAndId(users.getEmail(), quizId);
 
@@ -94,20 +104,18 @@ public class QuizGetService {
             QuizGetDto quizGetDto = new QuizGetDto();
             quizGetDto.setId(quiz.getId());
             quizGetDto.setTitle(quiz.getTitle());
-            quizGetDto.setType(quiz.getType());
 
             // Quiz와 관련된 Questions 목록을 가져옵니다.
-            List<Questions> questionsList = questionRepository.findByQuiz_Id(quiz.getId());
+            List<Question> questionList = questionRepository.findByQuiz_Id(quiz.getId());
             List<QuestionGetDto> questionDtos = new ArrayList<>();
 
-            for (Questions questions : questionsList) {
+            for (Question question : questionList) {
                 QuestionGetDto questionGetDto = new QuestionGetDto();
-                questionGetDto.setId(questions.getId());
-                questionGetDto.setContent(questions.getContent());
-                questionGetDto.setImgUrl(questions.getImg());
+                questionGetDto.setId(question.getId());
+                questionGetDto.setContent(question.getContent());
 
                 // Options 정보를 QuestionGetDto에 추가
-                Options options = questions.getOption();
+                Options options = question.getOptions();
                 OptionGetDto optionGetDto = new OptionGetDto();
                 optionGetDto.setId(options.getId());
                 optionGetDto.setTime(options.getTime());
@@ -122,7 +130,7 @@ public class QuizGetService {
                 questionGetDto.setOptions(optionGetDto);
 
                 // Choices 목록을 가져와서 QuestionGetDto에 추가
-                List<Choice> choicesList = choiceRepository.findByQuestion_Id(questions.getId());
+                List<Choice> choicesList = choiceRepository.findByQuestion_Id(question.getId());
                 List<ChoiceGetDto> choiceDtos = new ArrayList<>();
 
                 for (Choice choice : choicesList) {
@@ -133,8 +141,18 @@ public class QuizGetService {
                     choiceGetDto.setShortAnswer(choice.getShortAnswer());
                     choiceDtos.add(choiceGetDto);
                 }
-
                 questionGetDto.setChoices(choiceDtos);
+
+                List<QuizImg> quizImgList = quizImgRepository.findByQuestionId(question.getId());
+                List<ImgGetDto> ImgList = new ArrayList<>();
+                if(quizImgList != null && !quizImgList.isEmpty()){
+                    for(QuizImg quizImg : quizImgList){
+                        ImgGetDto imgGetDto = new ImgGetDto();
+                        imgGetDto.setFileName(quizImg.getFileName());
+                        ImgList.add(imgGetDto);
+                    }
+                }
+                questionGetDto.setUploadFileNames(ImgList);
                 questionDtos.add(questionGetDto);
             }
 

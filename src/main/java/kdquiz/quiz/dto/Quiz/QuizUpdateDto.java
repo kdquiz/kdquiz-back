@@ -1,5 +1,6 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Quiz;
 
+import kdquiz.quiz.dto.Question.QuestionUpdateDto;
 import lombok.*;
 
 import java.util.List;
@@ -10,6 +11,4 @@ import java.util.List;
 @Getter
 public class QuizUpdateDto {
     private String title;
-    private String type;
-    private List<QuestionUpdateDto> questions;
 }

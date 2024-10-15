@@ -1,4 +1,4 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Choice;
 
 import lombok.*;
 

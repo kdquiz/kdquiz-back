@@ -1,6 +1,6 @@
 package kdquiz.game.dto;
 
-import kdquiz.quiz.dto.QuestionGetDto;
+import kdquiz.quiz.dto.Question.QuestionGetDto;
 import lombok.*;
 
 import java.util.List;

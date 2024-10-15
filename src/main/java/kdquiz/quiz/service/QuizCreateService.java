@@ -1,25 +1,17 @@
 package kdquiz.quiz.service;
 
-import kdquiz.domain.*;
-import kdquiz.quiz.dto.*;
 import kdquiz.ResponseDto;
+import kdquiz.domain.*;
+import kdquiz.quiz.dto.Quiz.QuizCreateDto;
 import kdquiz.quiz.repository.ChoiceRepository;
 import kdquiz.quiz.repository.OptionRepository;
 import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
 import kdquiz.users.repository.UsersRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -40,33 +32,6 @@ public class QuizCreateService {
 
     @Autowired
     UsersRepository usersRepository;
-
-    //이미지 저장 경로
-    @Value("${image.upload.path}")
-    private String imageUploadPath;
-
-
-    private String getImageUrl(MultipartFile file, long id) throws IOException {
-
-        String UserId = Long.toString(id);
-        // 파일의 원래 이름을 가져옴
-        String originalFilename = file.getOriginalFilename();
-        // 파일의 확장자를 추출함
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        // 저장될 파일 이름을 생성함 (예: "image1234.jpg")
-        String savedFileName = UserId +"_"+ System.currentTimeMillis() + fileExtension;
-        // 이미지가 저장될 경로를 지정함
-        String imagePath = imageUploadPath + savedFileName;
-
-        // 이미지를 서버에 저장함
-        Path path = Paths.get(imagePath);
-        Files.write(path, file.getBytes());
-
-        // 저장된 이미지의 URL을 생성하여 반환함
-        String imageUrl = "/"+ UserId+ "/" + savedFileName; // 예시: "/images/image1234.jpg"
-
-        return imageUrl;
-    }
 
 
 //    @Transactional
@@ -156,14 +121,13 @@ public class QuizCreateService {
             Quiz quiz = new Quiz();
             System.out.println("질문: "+quizCreateDto);
             quiz.setTitle(quizCreateDto.getTitle());
-            quiz.setType("");
             quiz.setCreatedAt(LocalDateTime.now());
             quiz.setEmail(users.getEmail());
             quizRepository.save(quiz);
 
 
             // 질문 엔티티 생성 및 저장
-            Questions question = new Questions();
+            Question question = new Question();
             question.setContent("문제");
             question.setCreatedAt(LocalDateTime.now());
             question.setQuiz(quiz); // 퀴즈와 연결

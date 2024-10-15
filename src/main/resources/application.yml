@@ -1,8 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://kdquiz.c9aakqo22nrx.ap-northeast-2.rds.amazonaws.com/kd-quiz?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
-    username: "master"
+    url: "jdbc:mysql://localhost:3306/kd-quiz?useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true"
+    username: "root"
     password: "12345678"
   jpa:
     database: mysql
@@ -18,8 +18,7 @@ spring:
       data-locations: classpath*:db/data.sql
       mode: always
 
-
-#  mail:
+  #  mail:
 #    host: smtp.gmail.com
 #    port: 587
 #    username: umdmstjd@gmail.com
@@ -48,6 +47,19 @@ spring:
           starttls:
             enable: true # 7
             required: true
+
+  servlet:
+    multipart:
+      max-request-size: 30MB
+      max-file-size: 10MB
+
+  kdquiz:
+    upload:
+        path: Img
+  data:
+    redis:
+      host: redis
+      port: 6379
 jwt:
   refresh:
     secret:
@@ -58,19 +70,14 @@ Email:
   id: umdmstjd@gmail.com
   pw: abkq wgdm umen vhcu
 
-image:
-  upload:
-    path: src/main/resources/static/img
 
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
 
 # Spring Security 로그 레벨 설정
 logging:
   level:
     org.springframework.security: DEBUG
+
+
 
 
 

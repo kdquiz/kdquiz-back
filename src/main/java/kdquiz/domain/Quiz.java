@@ -22,9 +22,6 @@ public class Quiz {
     private String title;
 
     @Column
-    private String type="";
-
-    @Column
     private int pin;
 
     @Column
@@ -40,7 +37,7 @@ public class Quiz {
     private LocalDateTime deletedAt;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
-    private List<Questions> questions;
+    private List<Question> questions;
 
 
 }

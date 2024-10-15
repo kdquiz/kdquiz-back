@@ -14,11 +14,11 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "participant_id", nullable = false)
-    private Participants participants;
+    private Participant participant;
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
-    private Questions questions;
+    private Question question;
 
     @ManyToOne
     @JoinColumn(name = "choice_id", nullable = false)

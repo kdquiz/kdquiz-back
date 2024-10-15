@@ -45,6 +45,7 @@ public class CustomSecuityConfig implements WebMvcConfigurer {
                 .requestMatchers("/api/v1/game/participants").permitAll()
                 .requestMatchers("/api/v1/answer/**").permitAll()
                 .requestMatchers("/api/v1/ranking/**").permitAll()
+                .requestMatchers("/api/v1/gameJoin/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 // 나머지들은 토큰 있어야 가능
                 .anyRequest().authenticated()

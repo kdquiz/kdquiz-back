@@ -1,22 +1,17 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Option;
 
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class OptionGetDto {
-    private Long id;
-
-    private int time;
-
+public class OptionUpdateDto {
+    private Integer time; //시간
     private Boolean useHint; //힌트여부
 
-    private int hintTime; //힌트 시간
+    private Integer hintTime; //힌트 시간
 
     private String hintContent; //힌트질문
 
@@ -27,4 +22,6 @@ public class OptionGetDto {
     private String commentary; //해설
 
     private int score; //점수
+
+
 }

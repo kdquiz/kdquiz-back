@@ -26,7 +26,9 @@ public class JwtUtil {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
+
     private static final long TOKEN_TIME = 2 * 60 * 60 * 1000L;
+//            2 * 60 * 60 * 1000L; 1 * 60 * 1000L;
     private static final long REFRESH_TOKEN_TIME = 30 * 24 * 60 * 60 * 1000L; // 30 days
     private final UserDetailsServiceImpl userDetailsService;
 
@@ -71,7 +73,6 @@ public class JwtUtil {
                         .setIssuedAt(date)
                         .setHeaderParam("typ", "jwt")
                         .signWith(key, signatureAlgorithm)
-
                         .compact();
     }
 
@@ -81,36 +82,48 @@ public class JwtUtil {
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(userEmail)
-                        .claim(AUTHORIZATION_KEY, "refresh")
+                        .claim(AUTHORIZATION_KEY, "user")
                         .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_TIME))
                         .setIssuedAt(now)
                         .setHeaderParam("typ", "jwt")
-                        .signWith(refreshKey, signatureAlgorithm)
+                        .signWith(key, signatureAlgorithm)
                         .compact();
     }
 
     //토큰 검증
     public boolean validateToken(String token){
+        return validateTokenWithKey(token, key);
+    }
+
+    //refresh 토큰 검증
+    public boolean validateRefrshToken(String token){
+        return validateTokenWithKey(token, refreshKey);
+    }
+
+    public boolean validateTokenWithKey(String token, Key key){
         try{
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e){
-            log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+            throw new JwtException("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
         } catch (ExpiredJwtException e){
-            log.info("Expried JWT token, 만료된 JWT token 입니다.");
+            throw new JwtException("Expried JWT token, 만료된 JWT token 입니다.");
         } catch (UnsupportedJwtException e){
-            log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+            throw new JwtException("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
         } catch (IllegalArgumentException e){
-            log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+            throw new JwtException("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+        } catch (io.jsonwebtoken.security.SignatureException e){
+            throw new JwtException("Invalid JWT signature: {}");
+        } catch (Exception e) {
+            throw new JwtException("JWT Error");
         }
-        return false;
     }
 
     //토큰에서 사용자 정보 가져오기
     public Claims getUserInfoFromToken(String token){
+        log.info("ㅎㅎ: "+Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody());
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
-
     //인증 객체 생성
     public Authentication createAuthentication(String username){
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);

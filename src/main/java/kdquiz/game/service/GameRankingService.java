@@ -2,7 +2,7 @@ package kdquiz.game.service;
 
 import jakarta.transaction.Transactional;
 import kdquiz.ResponseDto;
-import kdquiz.domain.Participants;
+import kdquiz.domain.Participant;
 import kdquiz.domain.Quiz;
 import kdquiz.game.dto.RankDto;
 import kdquiz.game.repository.ParticipantsRepositroy;
@@ -25,22 +25,22 @@ public class GameRankingService {
     public ResponseDto<?> Rank(int pin) {
         try{
             Quiz quizId = quizRepository.findByPin(pin);
-            List<Participants> rankList = participantsRepositroy.findByQuizIdOrderByScoreDesc(quizId.getId());
+            List<Participant> rankList = participantsRepositroy.findByQuizIdOrderByScoreDesc(quizId.getId());
 
             int ranks = 1;
-            for(Participants participants : rankList){
-                participants.setRanking(ranks);
+            for(Participant participant : rankList){
+                participant.setRanking(ranks);
                 ranks++;
-                participantsRepositroy.save(participants);
+                participantsRepositroy.save(participant);
             }
 
 
             List<RankDto> rankDtoList = new ArrayList<>();
-            for(Participants participantsList : rankList){
+            for(Participant participantList : rankList){
                 RankDto rankDtos = new RankDto();
-                rankDtos.setId(participantsList.getId());
-                rankDtos.setScore(participantsList.getScore());
-                rankDtos.setRank(participantsList.getRanking());
+                rankDtos.setId(participantList.getId());
+                rankDtos.setScore(participantList.getScore());
+                rankDtos.setRank(participantList.getRanking());
                 rankDtoList.add(rankDtos);
             }
             return ResponseDto.setSuccess("R001", "순위정보", rankDtoList);

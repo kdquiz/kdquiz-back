@@ -3,7 +3,9 @@ package kdquiz.game.service;
 import kdquiz.ResponseDto;
 import kdquiz.domain.*;
 import kdquiz.game.dto.GameCreateDto;
-import kdquiz.quiz.dto.*;
+import kdquiz.quiz.dto.Choice.ChoiceGetDto;
+import kdquiz.quiz.dto.Option.OptionGetDto;
+import kdquiz.quiz.dto.Question.QuestionGetDto;
 import kdquiz.quiz.repository.ChoiceRepository;
 import kdquiz.quiz.repository.OptionRepository;
 import kdquiz.quiz.repository.QuestionRepository;
@@ -57,21 +59,20 @@ public class GameCreateService {
             GameCreateDto gameCreateDto = new GameCreateDto();
             gameCreateDto.setId(quiz.getId());
             gameCreateDto.setTitle(quiz.getTitle());
-            gameCreateDto.setType(quiz.getType());
             gameCreateDto.setPin(gamePin);
             quiz.setPin(Integer.parseInt(gamePin));
 
             // Quiz와 관련된 Questions 목록을 가져옵니다.
-            List<Questions> questionsList = questionRepository.findByQuiz_Id(quiz.getId());
+            List<Question> questionList = questionRepository.findByQuiz_Id(quiz.getId());
             List<QuestionGetDto> questionDtos = new ArrayList<>();
 
-            for (Questions questions : questionsList) {
+            for (Question question : questionList) {
                 QuestionGetDto questionGetDto = new QuestionGetDto();
-                questionGetDto.setContent(questions.getContent());
-                questionGetDto.setId(questions.getId());
+                questionGetDto.setContent(question.getContent());
+                questionGetDto.setId(question.getId());
 
                 // Options 정보를 QuestionGetDto에 추가
-                Options options = questions.getOption();
+                Options options = question.getOptions();
                 OptionGetDto optionGetDto = new OptionGetDto();
                 optionGetDto.setId(options.getId());
                 optionGetDto.setUseHint(options.getUseHint());
@@ -84,7 +85,7 @@ public class GameCreateService {
                 questionGetDto.setOptions(optionGetDto);
 
                 // Choices 목록을 가져와서 QuestionGetDto에 추가
-                List<Choice> choicesList = choiceRepository.findByQuestion_Id(questions.getId());
+                List<Choice> choicesList = choiceRepository.findByQuestion_Id(question.getId());
                 List<ChoiceGetDto> choiceDtos = new ArrayList<>();
 
                 for (Choice choice : choicesList) {

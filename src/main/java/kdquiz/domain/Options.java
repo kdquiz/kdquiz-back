@@ -42,5 +42,5 @@ public class Options {
 
     @OneToOne
     @JoinColumn(name = "question_id", nullable = false)
-    private Questions question;
+    private Question question;
 }

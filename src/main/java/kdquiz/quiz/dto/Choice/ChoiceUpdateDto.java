@@ -1,4 +1,4 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Choice;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Getter
 public class ChoiceUpdateDto {
-    private Long id;
+    private long id;
     private String content;
     private Boolean isCorrect;
     private String shortAnswer;

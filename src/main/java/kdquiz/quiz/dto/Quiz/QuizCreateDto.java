@@ -1,8 +1,6 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Quiz;
 
 import lombok.*;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor

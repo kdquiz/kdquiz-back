@@ -2,73 +2,57 @@ package kdquiz.quiz.service;
 
 import kdquiz.ResponseDto;
 import kdquiz.domain.*;
-import kdquiz.quiz.dto.*;
-import kdquiz.quiz.repository.ChoiceRepository;
-import kdquiz.quiz.repository.OptionRepository;
-import kdquiz.quiz.repository.QuestionRepository;
-import kdquiz.quiz.repository.QuizRepository;
+import kdquiz.quiz.dto.Choice.ChoiceGetDto;
+import kdquiz.quiz.dto.Choice.ChoiceUpdateDto;
+import kdquiz.quiz.dto.Img.ImgGetDto;
+import kdquiz.quiz.dto.Option.OptionGetDto;
+import kdquiz.quiz.dto.Option.OptionUpdateDto;
+import kdquiz.quiz.dto.Question.QuestionGetDto;
+import kdquiz.quiz.dto.Question.QuestionUpdateDto;
+import kdquiz.quiz.repository.*;
 import kdquiz.users.repository.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import kdquiz.util.CustomFileUtil;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class QuestionCRUDService {
-    @Autowired
-    QuizRepository quizRepository;
 
-    @Autowired
-    QuestionRepository questionRepository;
+    private final QuizRepository quizRepository;
 
-    @Autowired
-    ChoiceRepository choiceRepository;
+    private final QuestionRepository questionRepository;
 
-    @Autowired
-    OptionRepository optionRepository;
+    private final ChoiceRepository choiceRepository;
 
-    @Autowired
-    UsersRepository usersRepository;
+    private final OptionRepository optionRepository;
 
-    //이미지 저장 경로
-    @Value("${image.upload.path}")
-    private String imageUploadPath;
+    private final UsersRepository usersRepository;
 
-    private String getImageUrl(MultipartFile file, long id) throws IOException {
+    private final CustomFileUtil customFileUtil;
+    private final QuizImgRepository quizImgRepository;
 
-        String UserId = Long.toString(id);
-        // 파일의 원래 이름을 가져옴
-        String originalFilename = file.getOriginalFilename();
-        // 파일의 확장자를 추출함
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        // 저장될 파일 이름을 생성함 (예: "image1234.jpg")
-        String savedFileName = UserId +"_"+ System.currentTimeMillis() + fileExtension;
-        // 이미지가 저장될 경로를 지정함
-        String imagePath = imageUploadPath + savedFileName;
-
-        // 이미지를 서버에 저장함
-        Path path = Paths.get(imagePath);
-        Files.write(path, file.getBytes());
-
-        // 저장된 이미지의 URL을 생성하여 반환함
-        String imageUrl = "/"+ UserId+ "/" + savedFileName; // 예시: "/images/image1234.jpg"
-
-        return imageUrl;
+    public QuestionCRUDService(QuizRepository quizRepository, QuestionRepository questionRepository, ChoiceRepository choiceRepository, OptionRepository optionRepository, UsersRepository usersRepository, CustomFileUtil customFileUtil, QuizImgRepository quizImgRepository) {
+        this.quizRepository = quizRepository;
+        this.questionRepository = questionRepository;
+        this.choiceRepository = choiceRepository;
+        this.optionRepository = optionRepository;
+        this.usersRepository = usersRepository;
+        this.customFileUtil = customFileUtil;
+        this.quizImgRepository = quizImgRepository;
     }
 
     //Question 추가
     @Transactional
-    public ResponseDto<Void> QuestionCreate(Long quizId, QuizCrDto quizCrDto, Users users) {
+    public ResponseDto<Void> questionCreate(Long quizId, Users users) {
 
         if(users.getEmail()==null){
             return ResponseDto.setFailed("Q403","사용자 정보 가져오기 실패");
@@ -85,38 +69,34 @@ public class QuestionCRUDService {
             quiz = quizRepository.save(quiz); // 저장 후 ID를 얻기 위해 리턴값으로 받음
 
 
-            // 질문 및 선택 생성 및 연결
-            for (QuestionCrDto questionCrDto : quizCrDto.getQuestions()) {
+            // 질문 엔티티 생성 및 저장
+            Question question = new Question();
+            question.setContent("퀴즈 문제");
+            question.setCreatedAt(LocalDateTime.now());
+            question.setQuiz(quiz); // 퀴즈와 연결
+            questionRepository.save(question);
 
-                // 질문 엔티티 생성 및 저장
-                Questions question = new Questions();
-                question.setContent(questionCrDto.getContent());
-                question.setCreatedAt(LocalDateTime.now());
-                question.setQuiz(quiz); // 퀴즈와 연결
-                questionRepository.save(question);
+            Options options = new Options();
+            options.setUseHint(true);
+            options.setHintTime(30);
+            options.setHintContent("힌트ㅎㅎ");
+            options.setUseAiFeedback(true);
+            options.setAiQuestion("ai 피드백");
+            options.setCommentary("코멘트  ㅎㅎ 피드백");
+            options.setScore(20);
+            options.setQuestion(question);
+            optionRepository.save(options);
 
-                Options options = new Options();
-                options.setUseHint(true);
-                options.setHintTime(30);
-                options.setHintContent("힌트");
-                options.setUseAiFeedback(true);
-                options.setAiQuestion("ai 피드백");
-                options.setCommentary("코멘트 피드백");
-                options.setScore(20);
-                options.setQuestion(question);
-                optionRepository.save(options);
-
-                for(int i=1; i<=4; i++){
-                    String num = Integer.toString(i);
-                    Choice choice = new Choice();
-                    choice.setContent(num);
-                    choice.setIsCorrect(false);
-                    choice.setShortAnswer("단답형");
-                    choice.setQuestion(question);
-                    choiceRepository.save(choice);
-                }
-
+            for(int i=1; i<=4; i++){
+                String num = Integer.toString(i+2);
+                Choice choice = new Choice();
+                choice.setContent(num);
+                choice.setIsCorrect(false);
+                choice.setShortAnswer("단답형");
+                choice.setQuestion(question);
+                choiceRepository.save(choice);
             }
+
             return ResponseDto.setSuccess("Q003", "퀴즈 업데이트 성공", null);
         } catch (Exception e) {
             return ResponseDto.setFailed("Q203","퀴즈 업데이트 실패");
@@ -125,74 +105,106 @@ public class QuestionCRUDService {
 
     //Question 수정
     @Transactional
-    public ResponseDto<Void> QuestionUpdate(Long questionId, QuizUpDto quizUpDto, MultipartFile[] files, Users users) {
+    public ResponseDto<Void> questionUpdate(Long questionId, QuestionUpdateDto questionUpdateDto,List<MultipartFile> filees, Users users) {
 
         if(users.getEmail()==null){
             return ResponseDto.setFailed("Q403","사용자 정보 가져오기 실패");
         }
         try {
             // 기존 퀴즈를 찾음
-            Optional<Questions> questionsOptional = questionRepository.findById(questionId);
+            Optional<Question> questionsOptional = questionRepository.findById(questionId);
             questionsOptional.orElseThrow(()->new IllegalArgumentException("퀴즈를 찾을 수 없습니다."));
 
-            Questions questions = questionsOptional.get();
+            Question questions = questionsOptional.get();
             Long QuizId = questions.getQuiz().getId();
             Optional<Quiz> quizOptional = quizRepository.findById(QuizId);
             Quiz quiz = quizOptional.get();
 
             Optional<Users> user = usersRepository.findByEmail(users.getEmail());
-            Users userId  = user.get();
+            user.orElseThrow(()->new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-            int i=0;
-            // 질문 및 선택 생성 및 연결
-            for (QuestionUpdateDto questionUpdateDto : quizUpDto.getQuestions()) {
-                // 질문 엔티티 생성 및 저장
-                Questions question = questionsOptional.get();
-                if(questionUpdateDto.getImgTF()==true){
-                    if (files != null && i < files.length) {
-                        MultipartFile file = files[i];
-                        String imageUrl = getImageUrl(file, userId.getId());
-                        i++;
-                        question.setImg(imageUrl);
+            Question question = questionsOptional.get();
 
-                    }
-                }
-                question.setContent(questionUpdateDto.getContent());
-                question.setUpdatedAt(LocalDateTime.now());
-                question.setQuiz(quiz); // 퀴즈와 연결
-                questionRepository.save(question);
-                question.setContent(questionUpdateDto.getContent());
-                question.setUpdatedAt(LocalDateTime.now());
-                question.setQuiz(quiz); // 퀴즈와 연결
-                question = questionRepository.save(question); // 저장 후 ID를 얻기 위해 리턴값으로 받음
+            question.setContent(questionUpdateDto.getContent());
+            question.setUpdatedAt(LocalDateTime.now());
+            question.setQuiz(quiz); // 퀴즈와 연결
+            question = questionRepository.save(question); // 저장 후 ID를 얻기 위해 리턴값으로 받음
 
+            //옵션 수정
+            OptionUpdateDto optionUpdateDto = questionUpdateDto.getOptions();
+            Optional<Options> optionsOptional = optionRepository.findByQuestion_Id(questionId);
+            optionsOptional.orElseThrow();
+            Options options = optionsOptional.get();
+            options.setTime(optionUpdateDto.getTime());
+            options.setUseHint(optionUpdateDto.getUseHint());
+            options.setHintTime(optionUpdateDto.getHintTime());
+            options.setHintContent(optionUpdateDto.getHintContent());
+            options.setUseAiFeedback(optionUpdateDto.getUseAiFeedback());
+            options.setAiQuestion(optionUpdateDto.getAiQuestion());
+            options.setCommentary(optionUpdateDto.getCommentary());
+            options.setScore(optionUpdateDto.getScore());
+            options.setQuestion(question);
+            optionRepository.save(options);
 
-                //옵션 수정
-                OptionUpdateDto optionUpdateDto = questionUpdateDto.getOptions();
-                Optional<Options> optionOptional = optionRepository.findById(optionUpdateDto.getId());
-                Options option = optionOptional.get();
-                option.setTime(optionUpdateDto.getTime());
-                option.setUseHint(optionUpdateDto.getUseHint());
-                option.setHintTime(optionUpdateDto.getHintTime());
-                option.setHintContent(optionUpdateDto.getHintContent());
-                option.setUseAiFeedback(optionUpdateDto.getUseAiFeedback());
-                option.setAiQuestion(optionUpdateDto.getAiQuestion());
-                option.setCommentary(optionUpdateDto.getCommentary());
-                option.setScore(optionUpdateDto.getScore());
-                option.setQuestion(question);
-                optionRepository.save(option);
+            for (ChoiceUpdateDto choiceUpdateDto: questionUpdateDto.getChoices()) {
+                Optional<Choice> choiceOptional = choiceRepository.findById(choiceUpdateDto.getId());
+                choiceOptional.orElseThrow(()->new IllegalArgumentException("선택지를 못 불러옴"));
+                Choice choice = choiceOptional.get();
+                choice.setContent(choiceUpdateDto.getContent());
+                choice.setIsCorrect(choiceUpdateDto.getIsCorrect());
+                choice.setShortAnswer(choiceUpdateDto.getShortAnswer());
+                choice.setQuestion(question); // 질문과 연결
+                choiceRepository.save(choice);
+            }
 
+            //기존 DB에 있는 이미지 파일 가져옴
+            List<QuizImg> oldImgGet = quizImgRepository.findByQuestionId(questionId);
+            List<String> oldImgList = new ArrayList<>();
+            if(oldImgGet != null && !oldImgGet.isEmpty()){
+                log.info("DB에 있는 이미지 조회: "+oldImgGet);
+                oldImgList = oldImgGet.stream()
+                        .map(QuizImg::getFileName)
+                        .collect(Collectors.toList());
+            }
 
-                for (ChoiceUpdateDto choiceUpdateDto: questionUpdateDto.getChoices()) {
-                    Optional<Choice> choiceOptional = choiceRepository.findById(choiceUpdateDto.getId());
-                    Choice choice = choiceOptional.get();
-                    choice.setContent(choiceUpdateDto.getContent());
-                    choice.setIsCorrect(choiceUpdateDto.getIsCorrect());
-                    choice.setShortAnswer(choiceUpdateDto.getShortAnswer());
-                    choice.setQuestion(question); // 질문과 연결
-                    choiceRepository.save(choice);
+            //기존 있는 파일 가져와서 새로운 파일과 합치기
+            List<String> uploadedFileNames = questionUpdateDto.getUploadFileNames();
+            if(questionUpdateDto.getFiles() != null && !questionUpdateDto.getFiles().isEmpty()){
+                List<MultipartFile> files = questionUpdateDto.getFiles();
+                List<String> fileNames = customFileUtil.saveFiles(files);
+                if(fileNames!=null && !filees.isEmpty()){
+                    uploadedFileNames.addAll(fileNames);
                 }
             }
+
+            //기존에 있는 DB와 새로운 파일 비교하여 삭제
+            List<String> removesFiles = new ArrayList<>();
+            if(oldImgList != null && !oldImgList.isEmpty()){
+               removesFiles = oldImgList
+                        .stream()
+                        .filter(fileName -> uploadedFileNames.indexOf(fileName)==-1)
+                        .collect(Collectors.toList());
+                customFileUtil.deleteFiles(removesFiles);
+                if(removesFiles!=null && !removesFiles.isEmpty()){
+                    for(String removeName : removesFiles){
+                       Optional<QuizImg> find = quizImgRepository.findById(removeName);
+                       quizImgRepository.delete(find.get());
+                    }
+                }
+            }
+
+            if((removesFiles != null && !removesFiles.isEmpty()) && (uploadedFileNames != null && !uploadedFileNames.isEmpty())){
+                uploadedFileNames.removeAll(removesFiles);
+            }
+
+            for(String ImgName : uploadedFileNames){
+                QuizImg quizImg = new QuizImg();
+                quizImg.setFileName(ImgName);
+                quizImg.setQuestionId(questionId);
+                quizImgRepository.save(quizImg);
+            }
+
+
             return ResponseDto.setSuccess("Q003", "질문 생성 성공", null);
         } catch (Exception e) {
             return ResponseDto.setFailed("Q203","질문 생성 실패");
@@ -202,7 +214,7 @@ public class QuestionCRUDService {
 
     //Question 삭제
     @Transactional
-    public ResponseDto<Void> QuestionDelete(Long questionId, Users users) {
+    public ResponseDto<Void> questionDelete(Long questionId, Users users) {
 
         if(users.getEmail()==null){
             return ResponseDto.setFailed("Q203","사용자 정보 가져오기 실패");
@@ -210,13 +222,25 @@ public class QuestionCRUDService {
 
         try {
             // 기존 퀴즈를 찾음
-            Optional<Questions> questions = questionRepository.findById(questionId);
-            Questions question = questions.get();
+            Optional<Question> questions = questionRepository.findById(questionId);
+            Question question = questions.get();
 
             questionRepository.delete(questions.get());
 
             Optional<Quiz> quizOptional = quizRepository.findByEmailAndId(users.getEmail(), question.getQuiz().getId());
-            quizOptional.orElseThrow(()->new IllegalArgumentException("퀴즈를 찾을 수 없습니다."));
+            quizOptional.orElseThrow(()->new IllegalArgumentException("Question를 찾을 수 없습니다."));
+
+            List<QuizImg> quizImgList = quizImgRepository.findByQuestionId(questionId);
+            if(quizImgList != null && !quizImgList.isEmpty()){
+                List<String> imgList = quizImgList.stream()
+                                .map(QuizImg::getFileName)
+                                        .collect(Collectors.toList());
+                customFileUtil.deleteFiles(imgList);
+                for(String names : imgList){
+                    Optional<QuizImg> quizImg = quizImgRepository.findById(names);
+                    quizImgRepository.delete(quizImg.get());
+                }
+            }
 
             // 퀴즈 엔티티 생성 및 저장
             Quiz quiz = quizOptional.get();
@@ -231,26 +255,25 @@ public class QuestionCRUDService {
     }
 
     @Transactional
-    public ResponseDto<QuestionGetDto> QuestionGet(Long questionId, Users users){
+    public ResponseDto<QuestionGetDto> questionGet(Long questionId, Users users){
         if(users.getEmail()==null){
             return ResponseDto.setFailed("Q403","사용자 정보 가져오기 실패");
         }
         try{
-            Optional<Questions> questionsOptional = questionRepository.findById(questionId);
+            Optional<Question> questionsOptional = questionRepository.findById(questionId);
             questionsOptional.orElseThrow(()->new IllegalArgumentException("퀴즈를 찾을 수 없습니다."));
 
-            Questions questions = questionsOptional.get();
+            Question question = questionsOptional.get();
             // Quiz와 관련된 Questions 목록을 가져옵니다.
 
             QuestionGetDto questionDtos = new QuestionGetDto();
 
             QuestionGetDto questionGetDto = new QuestionGetDto();
-            questionGetDto.setId(questions.getId());
-            questionGetDto.setContent(questions.getContent());
-            questionGetDto.setImgUrl(questions.getImg());
+            questionGetDto.setId(question.getId());
+            questionGetDto.setContent(question.getContent());
 
             // Options 정보를 QuestionGetDto에 추가
-            Options options = questions.getOption();
+            Options options = question.getOptions();
             OptionGetDto optionGetDto = new OptionGetDto();
             optionGetDto.setId(options.getId());
             optionGetDto.setTime(options.getTime());
@@ -265,7 +288,7 @@ public class QuestionCRUDService {
             questionGetDto.setOptions(optionGetDto);
 
             // Choices 목록을 가져와서 QuestionGetDto에 추가
-            List<Choice> choicesList = choiceRepository.findByQuestion_Id(questions.getId());
+            List<Choice> choicesList = choiceRepository.findByQuestion_Id(question.getId());
             List<ChoiceGetDto> choiceDtos = new ArrayList<>();
 
             for (Choice choice : choicesList) {
@@ -276,9 +299,18 @@ public class QuestionCRUDService {
                 choiceGetDto.setShortAnswer(choice.getShortAnswer());
                 choiceDtos.add(choiceGetDto);
             }
-
             questionGetDto.setChoices(choiceDtos);
 
+            List<QuizImg> quizImgList = quizImgRepository.findByQuestionId(questionId);
+            List<ImgGetDto> ImgList = new ArrayList<>();
+            if(quizImgList != null && !quizImgList.isEmpty()){
+                for(QuizImg quizImg : quizImgList){
+                    ImgGetDto imgGetDto = new ImgGetDto();
+                    imgGetDto.setFileName(quizImg.getFileName());
+                    ImgList.add(imgGetDto);
+                }
+            }
+            questionGetDto.setUploadFileNames(ImgList);
             return ResponseDto.setSuccess("Q002", "사용자가 생성한 질문 조회 성공", questionGetDto);
         } catch (Exception e) {
             return ResponseDto.setFailed("Q202", "사용자가 생성한 질문 조회 실패");

@@ -1,7 +1,11 @@
-package kdquiz.quiz.dto;
+package kdquiz.quiz.dto.Question;
 
+import kdquiz.quiz.dto.Choice.ChoiceGetDto;
+import kdquiz.quiz.dto.Img.ImgGetDto;
+import kdquiz.quiz.dto.Option.OptionGetDto;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,5 +19,5 @@ public class QuestionGetDto {
     private String content;
     private OptionGetDto options;
     private List<ChoiceGetDto> choices;
-    private String imgUrl;
+    private List<ImgGetDto> uploadFileNames = new ArrayList<>();
 }

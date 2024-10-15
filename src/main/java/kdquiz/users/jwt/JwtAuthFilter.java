@@ -24,9 +24,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
         String token = jwtUtil.resolveToken(request);
+        log.info("토큰 필터: "+token);
 
         if(token != null){
-            if(!jwtUtil.validateToken(token)){
+            boolean accessToken = jwtUtil.validateToken(token);
+            if(!accessToken){
                 jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
                 return;
             }
