@@ -3,7 +3,7 @@ services:
     image: mysql:8.0
     container_name: mysqldb
     environment:
-      MYSQL_DATABASE: kd-quiz
+      MYSQL_DATABASE: kdquiz
       MYSQL_ROOT_PASSWORD: 12345678
       MYSQL_PASSWORD: 12345678
     ports:
@@ -26,7 +26,7 @@ services:
       - mysqldb
     environment:
       WAIT_HOSTS: mysqldb:3306
-      SPRING_DATASOURCE_URL: jdbc:mysql://kdquiz.c36o2sqme27r.ap-northeast-2.rds.amazonaws.com/kd-quiz
+      SPRING_DATASOURCE_URL: jdbc:mysql://kdquiz.c36o2sqme27r.ap-northeast-2.rds.amazonaws.com/kd-quiz?createDatabaseIfNotExist=true&characterEncoding=UTF-8&profileSql=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 12345678
     ports:
