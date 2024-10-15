@@ -51,7 +51,7 @@ public class UserController {
             @ApiResponse(responseCode = "U201", description = "아이디 중복"),
             @ApiResponse(responseCode = "U301", description = "닉넴임 중복")
     })
-    @PostMapping("/users/register")
+    @PostMapping("/users/register/")
     public ResponseDto<?> SingUp(@RequestBody SignUpDto signUpDto){
         return signUpService.SingUp(signUpDto);
     }
@@ -61,7 +61,7 @@ public class UserController {
             @ApiResponse(responseCode = "U003", description = "로그인 성공"),
             @ApiResponse(responseCode = "U103", description = "비밀번호가 일치하지 않음")
     })
-    @PostMapping("/users/login")
+    @PostMapping("/users/login/")
     public ResponseDto<?> SignIn(@RequestBody SignInDto signInDto, HttpServletResponse response){
 //        String userEmail = signInDto.getEmail();
 //        String token = jwtUtil.createToken(userEmail);
@@ -76,7 +76,7 @@ public class UserController {
             @ApiResponse(responseCode = "U201", description = "이메일 요청 실패")
     })
     //이메일 요청
-    @PostMapping("/mailSend")
+    @PostMapping("/mailSend/")
     public ResponseDto<?> mailSend(@RequestBody @Valid EmailDto emailDto){
         System.out.println("이메일 인증 이메일: "+emailDto.getEmail());
         return mailSendService.joinEmail(emailDto.getEmail());
@@ -90,19 +90,19 @@ public class UserController {
             @ApiResponse(responseCode = "U301", description = "그냥 오류"),
     })
     //이메일 인증
-    @PostMapping("/mailAuthCheck")
+    @PostMapping("/mailAuthCheck/")
     public ResponseDto<?> AuthCheck(@RequestBody @Valid EmailCheckDto emailCheckDto){
         return mailSendService.CheckAuthNum(emailCheckDto.getEmail(), emailCheckDto.getAuthNum());
     }
 
-    @GetMapping("/users/get")
+    @GetMapping("/users/get/")
     public ResponseDto<List<UserGetDto>> usersGet() {
         ResponseDto<List<UserGetDto>> users = (ResponseDto<List<UserGetDto>>) usersGetService.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK).getBody();
     }
 
     @Operation(summary = "refresh-Token 발급 (기존 토큰 10분 밑으로 남았을때 리프레쉬 토큰 발급)")
-    @PostMapping("/refresh")
+    @PostMapping("/refresh/")
     public ResponseDto<?> refreshToken(@RequestHeader("Authorization")String authHeader, HttpServletResponse response){
         if(authHeader==null || authHeader.length()<7){
             throw new JwtException("INVALID STRING");

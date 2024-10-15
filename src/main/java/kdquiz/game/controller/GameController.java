@@ -65,7 +65,7 @@ public class GameController {
     }
 
     @Operation(summary = "게임 참가")
-    @PostMapping("/gameJoin")
+    @PostMapping("/gameJoin/")
     public ResponseEntity<ResponseDto<GameJoinDto>> gameJoin(GameJoinDto gameJoinDto){
         ResponseDto<GameJoinDto> responseDto =  gameJoinService.ParticipantsGame(gameJoinDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
@@ -86,13 +86,13 @@ public class GameController {
             @ApiResponse(responseCode = "A001", description = "정답"),
             @ApiResponse(responseCode = "A101", description = "오답")
     })
-    @PostMapping("/answer")
+    @PostMapping("/answer/")
     public ResponseEntity<ResponseDto<Void>> Answer(@RequestParam int pin, @RequestParam long questionId, @RequestParam long playerId, @RequestParam String answer){
         ResponseDto<Void> responseDto = (ResponseDto<Void>) gamePlaySerivce.Answer(pin, questionId, playerId, answer);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/ranking")
+    @GetMapping("/ranking/")
     public ResponseEntity<ResponseDto<Void>> Ranking(@RequestParam int pin){
         ResponseDto<Void> responseDto = (ResponseDto<Void>) gameRankingService.Rank(pin);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);

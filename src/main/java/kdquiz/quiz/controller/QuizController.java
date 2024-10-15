@@ -61,7 +61,7 @@ public class QuizController {
             @ApiResponse(responseCode = "Q101", description = "퀴즈 생성 실패"),
             @ApiResponse(responseCode = "Q201", description = "존재하지 않는 회원")
     })
-    @PostMapping("/quiz")
+    @PostMapping("/quiz/")
     public ResponseEntity<ResponseDto<?>> CreateQuiz(@RequestBody QuizCreateDto quizCreateDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         ResponseDto<Void> responseDto = (ResponseDto<Void>) quizCreateService.createQuiz(quizCreateDto, userDetails.getUsers());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
@@ -87,7 +87,7 @@ public class QuizController {
             @ApiResponse(responseCode = "Q102", description = "사용자가 없음"),
             @ApiResponse(responseCode = "Q202", description = "사용자가 생성한 퀴즈 목록 조회 실패")
     })
-    @GetMapping("/quiz")
+    @GetMapping("/quiz/")
     public ResponseEntity<ResponseDto<List<QuizGetAllDto>>> QuizGetAll(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam(required = false, defaultValue = "Time_desc") String SortBy, @RequestParam(required = false) String searchTitle){
         ResponseDto<List<QuizGetAllDto>> responseDto = quizGetService.quizGetAll(userDetails.getUsers(), SortBy, searchTitle);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
