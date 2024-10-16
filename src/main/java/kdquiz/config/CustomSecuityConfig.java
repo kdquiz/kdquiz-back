@@ -30,19 +30,19 @@ public class CustomSecuityConfig implements WebMvcConfigurer {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable().authorizeRequests()
                 // 밑에 5명 url 토큰 인증없이 바로 실행 가능
-                .requestMatchers("/api/v1/participants").permitAll()
-                .requestMatchers("/api/v1/game/participants").permitAll()
+                .requestMatchers("/api/v1/participants/").permitAll()
+                .requestMatchers("/api/v1/game/participants/").permitAll()
                 .requestMatchers("/api/v1/game/participants/{pin}").permitAll()
                 .requestMatchers("/api/v1/game/participants/{pin}/{nickname}").permitAll()
-                .requestMatchers("/api/v1/users/register").permitAll()
-                .requestMatchers("/api/v1/users/login").permitAll()
-                .requestMatchers("/api/v1/mailSend").permitAll()
-                .requestMatchers("/api/v1/mailAuthCheck").permitAll()
+                .requestMatchers("/api/v1/users/register/").permitAll()
+                .requestMatchers("/api/v1/users/login/").permitAll()
+                .requestMatchers("/api/v1/mailSend/").permitAll()
+                .requestMatchers("/api/v1/mailAuthCheck/").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll() //스웨거
                 .requestMatchers("/v3/api-docs/**").permitAll() //스웨거
                 .requestMatchers("/swagger-ui.html/**").permitAll()//스웨거
-                .requestMatchers("/api/v1/users/get").permitAll()
-                .requestMatchers("/api/v1/game/participants").permitAll()
+                .requestMatchers("/api/v1/users/get/").permitAll()
+                .requestMatchers("/api/v1/game/participants/").permitAll()
                 .requestMatchers("/api/v1/answer/**").permitAll()
                 .requestMatchers("/api/v1/ranking/**").permitAll()
                 .requestMatchers("/api/v1/gameJoin/**").permitAll()
