@@ -25,7 +25,13 @@ public class Question {
         private Quiz quiz;
 
         @Column
+        private Integer ord;
+
+        @Column
         private String content;
+
+        @Column
+        private String shortAnswer;
 
         @ElementCollection
         private List<QuizImg> imageList = new ArrayList<>();

@@ -4,6 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import kdquiz.ResponseDto;
+import kdquiz.domain.Choice;
+import kdquiz.quiz.dto.Choice.ChoiceGetDto;
+import kdquiz.quiz.dto.Choice.ChoiceListUpdate;
+import kdquiz.quiz.dto.Choice.ChoiceUpdateDto;
 import kdquiz.quiz.dto.Question.QuestionGetDto;
 import kdquiz.quiz.dto.Question.QuestionUpdateDto;
 import kdquiz.quiz.dto.Quiz.QuizCreateDto;
@@ -19,6 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -40,6 +45,9 @@ public class QuizController {
 
     @Autowired
     QuestionCRUDService questionCRUDService;
+
+    @Autowired
+    ChoiceCRUDService choiceCRUDService;
 
 
 //    @Operation(summary = "퀴즈생성 토큰 헤더에 넣으셈")
@@ -187,4 +195,38 @@ public class QuizController {
     }
 
 
+    @Operation(summary = "Choice 추가🙂")
+    @PostMapping("/question/choice/{questionId}")
+    public ResponseEntity<ResponseDto<ChoiceGetDto>> choiceCreate(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<ChoiceGetDto> responseDto = choiceCRUDService.choiceCreate(questionId, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Choice 삭제😀")
+    @DeleteMapping("/question/choice/{choiceId}")
+    public ResponseEntity<ResponseDto<Void>> choiceDelete(@PathVariable Long choiceId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<Void> responseDto = choiceCRUDService.choiceDelete(choiceId,userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Choice 조회🤯🤯🤯")
+    @GetMapping("/question/choice/{questionId}")
+    public ResponseEntity<ResponseDto<List<ChoiceGetDto>>> choiceGet(@PathVariable Long questionId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<List<ChoiceGetDto>> responseDto = choiceCRUDService.choiceGet(questionId, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Choice 전체수정🤯🤯")
+    @PutMapping("/question/choice/{questionId}")
+    public ResponseEntity<ResponseDto<List<ChoiceGetDto>>> choiceAllUpdate(@PathVariable Long questionId, @RequestBody ChoiceListUpdate choiceListUpdate, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<List<ChoiceGetDto>> responseDto = choiceCRUDService.choiceAllUpdate(questionId, choiceListUpdate, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Choice 개별수정🤯🤯")
+    @PutMapping("/question/choice/")
+    public ResponseEntity<ResponseDto<ChoiceGetDto>> choiceUpdate(@RequestBody ChoiceUpdateDto choiceUpdateDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        ResponseDto<ChoiceGetDto> responseDto = choiceCRUDService.choiceUpdate(choiceUpdateDto, userDetails.getUsers());
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 }

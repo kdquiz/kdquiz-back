@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,9 +39,12 @@ public class QuestionCRUDService {
     private final UsersRepository usersRepository;
 
     private final CustomFileUtil customFileUtil;
+
     private final QuizImgRepository quizImgRepository;
 
-    public QuestionCRUDService(QuizRepository quizRepository, QuestionRepository questionRepository, ChoiceRepository choiceRepository, OptionRepository optionRepository, UsersRepository usersRepository, CustomFileUtil customFileUtil, QuizImgRepository quizImgRepository) {
+    private final QuestionSizeService questionSizeService;
+
+    public QuestionCRUDService(QuizRepository quizRepository, QuestionRepository questionRepository, ChoiceRepository choiceRepository, OptionRepository optionRepository, UsersRepository usersRepository, CustomFileUtil customFileUtil, QuizImgRepository quizImgRepository, QuestionSizeService questionSizeService) {
         this.quizRepository = quizRepository;
         this.questionRepository = questionRepository;
         this.choiceRepository = choiceRepository;
@@ -48,6 +52,7 @@ public class QuestionCRUDService {
         this.usersRepository = usersRepository;
         this.customFileUtil = customFileUtil;
         this.quizImgRepository = quizImgRepository;
+        this.questionSizeService = questionSizeService;
     }
 
     //Question 추가
@@ -57,11 +62,13 @@ public class QuestionCRUDService {
         if(users.getEmail()==null){
             return ResponseDto.setFailed("Q403","사용자 정보 가져오기 실패");
         }
-
         try {
             // 기존 퀴즈를 찾음
             Optional<Quiz> quizOptional = quizRepository.findByEmailAndId(users.getEmail(), quizId);
             quizOptional.orElseThrow(()->new IllegalArgumentException("퀴즈를 찾을 수 없습니다."));
+
+            int size = questionSizeService.countQuestion(quizId);
+            log.info("question사이즈: "+size);
 
             // 퀴즈 엔티티 생성 및 저장
             Quiz quiz = quizOptional.get();
@@ -74,6 +81,8 @@ public class QuestionCRUDService {
             question.setContent("퀴즈 문제");
             question.setCreatedAt(LocalDateTime.now());
             question.setQuiz(quiz); // 퀴즈와 연결
+            question.setShortAnswer("단답형");
+            question.setOrd(size);
             questionRepository.save(question);
 
             Options options = new Options();
@@ -245,6 +254,13 @@ public class QuestionCRUDService {
             // 퀴즈 엔티티 생성 및 저장
             Quiz quiz = quizOptional.get();
             quiz.setUpdatedAt(LocalDateTime.now());
+//            List<Question> questionList = quiz.getQuestions();
+//            questionList.sort(Comparator.comparingInt(Question::getOrd));
+//            for(int i=0; i<questionList.size(); i++){
+//                log.info("퀘스천 정렬: "+questionList.get(i));
+//                questionList.get(i).setOrd(i);
+//                questionRepository.save(questionList.get(i));
+//            }
             quizRepository.save(quiz); // 저장 후 ID를 얻기 위해 리턴값으로 받음
 
             return ResponseDto.setSuccess("Q003", "질문 삭제 성공", null);
@@ -265,9 +281,6 @@ public class QuestionCRUDService {
 
             Question question = questionsOptional.get();
             // Quiz와 관련된 Questions 목록을 가져옵니다.
-
-            QuestionGetDto questionDtos = new QuestionGetDto();
-
             QuestionGetDto questionGetDto = new QuestionGetDto();
             questionGetDto.setId(question.getId());
             questionGetDto.setContent(question.getContent());

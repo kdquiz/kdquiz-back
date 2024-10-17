@@ -25,4 +25,5 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
     Quiz findByQuestions(List<Question> questions);
 
+
 }

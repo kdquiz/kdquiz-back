@@ -131,6 +131,8 @@ public class QuizCreateService {
             question.setContent("문제");
             question.setCreatedAt(LocalDateTime.now());
             question.setQuiz(quiz); // 퀴즈와 연결
+            question.setShortAnswer("단답형");
+            question.setOrd(0);
             questionRepository.save(question);
 
             Options options = new Options();
