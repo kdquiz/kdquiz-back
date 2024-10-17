@@ -17,6 +17,9 @@ import java.util.List;
 public class QuestionGetDto {
     private Long id;
     private String content;
+    private Integer ord;
+    private String shortAnswer;
+    private Integer type;
     private OptionGetDto options;
     private List<ChoiceGetDto> choices;
     private List<ImgGetDto> uploadFileNames = new ArrayList<>();

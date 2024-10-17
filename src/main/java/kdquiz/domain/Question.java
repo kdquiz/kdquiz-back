@@ -33,6 +33,9 @@ public class Question {
         @Column
         private String shortAnswer;
 
+        @Column
+        private Integer type = 0;
+
         @ElementCollection
         private List<QuizImg> imageList = new ArrayList<>();
 

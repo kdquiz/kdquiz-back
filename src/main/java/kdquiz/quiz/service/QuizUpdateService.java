@@ -4,14 +4,10 @@ import kdquiz.ResponseDto;
 import kdquiz.domain.Quiz;
 import kdquiz.domain.Users;
 import kdquiz.quiz.dto.Quiz.QuizUpdateDto;
-import kdquiz.quiz.repository.ChoiceRepository;
-import kdquiz.quiz.repository.OptionRepository;
-import kdquiz.quiz.repository.QuestionRepository;
 import kdquiz.quiz.repository.QuizRepository;
 import kdquiz.users.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.Optional;

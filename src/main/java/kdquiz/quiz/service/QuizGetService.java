@@ -113,6 +113,9 @@ public class QuizGetService {
                 QuestionGetDto questionGetDto = new QuestionGetDto();
                 questionGetDto.setId(question.getId());
                 questionGetDto.setContent(question.getContent());
+                questionGetDto.setOrd(question.getOrd());
+                questionGetDto.setType(question.getType());
+                questionGetDto.setShortAnswer(question.getShortAnswer());
 
                 // Options 정보를 QuestionGetDto에 추가
                 Options options = question.getOptions();

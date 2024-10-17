@@ -83,6 +83,7 @@ public class QuestionCRUDService {
             question.setQuiz(quiz); // 퀴즈와 연결
             question.setShortAnswer("단답형");
             question.setOrd(size);
+            question.setType(0);
             questionRepository.save(question);
 
             Options options = new Options();
@@ -97,13 +98,17 @@ public class QuestionCRUDService {
             optionRepository.save(options);
 
             for(int i=1; i<=4; i++){
-                String num = Integer.toString(i+2);
+                String num = Integer.toString(i);
                 Choice choice = new Choice();
                 choice.setContent(num);
-                choice.setIsCorrect(false);
+                if(i == 1){
+                    choice.setIsCorrect(true);  // 첫 번째 선택지만 true로 설정
+                }else{
+                    choice.setIsCorrect(false);
+                }
                 choice.setShortAnswer("단답형");
                 choice.setQuestion(question);
-                choiceRepository.save(choice);
+                choiceRepository.save(choice);  // 저장 로그 추가
             }
 
             return ResponseDto.setSuccess("Q003", "퀴즈 업데이트 성공", null);
@@ -284,6 +289,9 @@ public class QuestionCRUDService {
             QuestionGetDto questionGetDto = new QuestionGetDto();
             questionGetDto.setId(question.getId());
             questionGetDto.setContent(question.getContent());
+            questionGetDto.setShortAnswer(question.getShortAnswer());
+            questionGetDto.setType(question.getType());
+            questionGetDto.setOrd(question.getOrd());
 
             // Options 정보를 QuestionGetDto에 추가
             Options options = question.getOptions();

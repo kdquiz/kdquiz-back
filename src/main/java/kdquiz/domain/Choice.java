@@ -20,11 +20,11 @@ public class Choice {
     private Question question;
 
     @Column
-    private String content="";
+    private String content;
 
     @Column
-    private Boolean isCorrect=false;
+    private Boolean isCorrect;
 
     @Column
-    private String shortAnswer="";
+    private String shortAnswer;
 }

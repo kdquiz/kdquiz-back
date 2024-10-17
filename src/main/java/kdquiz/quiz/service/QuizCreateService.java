@@ -133,6 +133,7 @@ public class QuizCreateService {
             question.setQuiz(quiz); // 퀴즈와 연결
             question.setShortAnswer("단답형");
             question.setOrd(0);
+            question.setType(0);
             questionRepository.save(question);
 
             Options options = new Options();
@@ -150,7 +151,11 @@ public class QuizCreateService {
                 String num = Integer.toString(i);
                 Choice choice = new Choice();
                 choice.setContent(num);
-                choice.setIsCorrect(false);
+                if(i == 1){
+                    choice.setIsCorrect(true);  // 첫 번째 선택지만 true로 설정
+                }else{
+                    choice.setIsCorrect(false);
+                }
                 choice.setShortAnswer("단답형");
                 choice.setQuestion(question);
                 choiceRepository.save(choice);
